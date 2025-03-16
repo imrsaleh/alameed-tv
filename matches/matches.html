@@ -24,6 +24,7 @@
         <button class="tab-btn" data-filter="all">عرض الكل</button>
     </div>
 
+<div id="loadingMessage" class="loading-message">جاري التحميل...</div>
     <div class="matches-container" id="matchesContainer"></div>
 
     <script>
@@ -42,6 +43,9 @@
             tomorrow: tomorrow.toISOString().split('T')[0]
         };
     }
+    const loadingMessage = document.getElementById('loadingMessage');
+    loadingMessage.style.display = 'block'; // عرض رسالة الانتظار
+
 
     // دالة جلب البيانات من API
     async function fetchMatches() {
@@ -52,6 +56,8 @@
         } catch (error) {
             console.error('خطأ في جلب البيانات:', error);
             showErrorMessage();
+        } finally {
+            loadingMessage.style.display = 'none'; // إخفاء رسالة الانتظار
         }
     }
 
