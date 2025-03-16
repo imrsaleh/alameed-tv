@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>ALAMEED PLAYER</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            touch-action: none; /* لتعطيل التكبير والتصغير باللمس */
+        }
+        body {
+            background-color: black;
+        }
+        ::cue {
+            font-size: 65px;
+            line-height: 2;
+            background: transparent;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/shaka-player/4.12.5/shaka-player.ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/3.0.10/shaka-player.ui.min.js" integrity="sha512-QFvv7o/fr201Dyw7VHNBDCn4UCQRuPLLWSLeAk6BGfgK3DTSv0SCFf/4eo9JYVIlAEMFfZDwbtHNUPi1XgpUPg==" crossorigin="anonymous"></script>
+    <script defer src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/shaka-player/4.12.5/controls.css">
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons+Sharp" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/youtube-theme.css">
+</head>
+<body>
+    <div class="video">
+        <video autoplay data-shaka-player id="video" style="width:100%; height:100vh"></video>
+    </div>
+    <script src="player/shakasettings.js"></script>
+</body>
+</html>
