@@ -45,12 +45,72 @@ body {
 }
 
 .match-card {
-    background: #ffffff;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: white;
     border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    transition: transform 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 10px 0;
+    padding: 15px;
+}
+
+.match-card .competition-name,
+.match-card .teams-container,
+.match-card .match-status {
+    margin-bottom: 10px;
+}
+
+.match-card .competition-name a,
+.match-card .teams-container a,
+.match-card .match-status a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.match-card .team {
+    display: flex;
+    align-items: center;
+}
+
+.match-card .team-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.match-card .team-name {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.match-card .score {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+.match-card .not-started {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 10px;
+    color: gray;
+}
+
+.match-card .aggregate-text,
+.match-card .win-description {
+    font-size: 12px;
+    color: gray;
+}
+
+.match-card .status-text {
+    font-size: 12px;
+    color: gray;
+}
+
+.match-card .time-container {
+    font-size: 12px;
+    color: gray;
 }
 
 .match-card:hover {

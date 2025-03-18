@@ -123,7 +123,7 @@
                 scoreElement.replaceWith(createNotStartedElement());
             }
         } else {
-            const newScore = `${game.first_team_score} - ${game.secund_team_score}`;
+            const newScore = `${game.first_team_score} - ${game.second_team_score}`;
             if (scoreElement.textContent !== newScore) {
                 if (scoreElement.className === 'not-started') {
                     scoreElement.replaceWith(createScoreElement(newScore));
@@ -201,8 +201,9 @@
 
     // دالة إنشاء بطاقة جديدة
     function createMatchCard(game) {
-        const matchCard = document.createElement('div');
+        const matchCard = document.createElement('a');
         matchCard.className = 'match-card';
+        matchCard.href = `game-details.html?gameid=${game.id}`;
         matchCard.dataset.id = game.id;
         matchCard.dataset.date = game.startyear;
     
@@ -211,7 +212,7 @@
     
         const scoreContent = game.statusText === 'لم تبدأ' ? 
             createNotStartedElement() :
-            createScoreElement(`${game.first_team_score} - ${game.secund_team_score}`);
+            createScoreElement(`${game.first_team_score} - ${game.second_team_score}`);
     
         // إضافة aggregateText إذا كانت القيمة ليست null
         const aggregateTextContent = game.aggregateText ?
@@ -238,13 +239,13 @@
                 ${scoreContent.outerHTML}
                 
                 <div class="team">
-                    <a href="team-row.html?teamid=${game.secund_team_id}">
+                    <a href="team-row.html?teamid=${game.second_team_id}">
                         <img class="team-logo" 
-                             src="${game.secund_team_logo}" 
-                             alt="${game.secund_team}"
+                             src="${game.second_team_logo}" 
+                             alt="${game.second_team}"
                              onerror="this.style.display='none'">
                     </a>
-                    <span class="team-name">${game.secund_team}</span>
+                    <span class="team-name">${game.second_team}</span>
                 </div>
             </div>
             
