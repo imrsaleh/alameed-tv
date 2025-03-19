@@ -15,13 +15,22 @@
         /* التنسيقات العامة */
         body {
             font-size: 14px; /* حجم النص العام */
+            background-color: rgb(15, 60, 66);
+            padding: 20px;
         }
 
         .loading-message {
-            text-align: center;
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
             padding: 20px;
-            font-size: 16px;
-            color: var(--secondary-color);
+            border-radius: 5px;
+            font-size: 18px;
+            z-index: 1000;
         }
 
         .events-container {
@@ -228,7 +237,9 @@
             const container = document.getElementById('eventsContainer');
             container.innerHTML = `
                 <div class="match-header">
-                    <h2>${game.competitionDisplayName}</h2>
+                    <h2 style="text-align: center; color: var(--secondary-color); font-weight: normal; opacity: 0.8;">
+                        ${game.competitionDisplayName}
+                    </h2>
                 </div>
                 
                 <div class="teams-container">
