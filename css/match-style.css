@@ -179,7 +179,7 @@ body {
 }
 
 .live-status {
-    color: #e63946;
+    color: #e63946 !important;
     font-weight: 700;
     animation: pulse 1.5s infinite;
 }
