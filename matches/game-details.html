@@ -253,7 +253,7 @@
             // عكس ترتيب الأحداث
             events.reverse().forEach(event => {
                 if (event.event === null || event.eventTime === null || event.player === null || event.teamID === null) {
-                    timeline.innerHTML = '<div class="loading-message">المباراة لم تبدأ</div>';
+                    timeline.innerHTML = `<div class="loading-message">${game.statusText}</div>`;
                     return;
                 }
 
