@@ -187,9 +187,9 @@
             'هدف عكسي': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:light:1.svg/NewBrand25/EventSubType/light/2',
             'الهدف الغي': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:light:11.svg/NewBrand25/EventSubType/light/25',
             'ركلة جزاء': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:light:1.svg/NewBrand25/EventSubType/light/3',
-            'ضربة جزاء ضائعة': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:light:6.svg/NewBrand25/EventType/light/6',
+            'ركلة جزاء ضائعة': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:light:6.svg/NewBrand25/EventType/light/6',
             'بطاقة صفراء': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:light:2.svg/NewBrand25/EventType/light/2',
-            'بطاقتين': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:dark:3.svg/NewBrand25/EventSubType/dark/21',
+            'البطاقة الثانية': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:dark:3.svg/NewBrand25/EventSubType/dark/21',
             'بطاقة حمراء': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:light:3.svg/NewBrand25/EventType/light/3',
             'تسديدة في العارضة': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:light:12.svg/NewBrand25/EventType/light/12',
             'استبدال': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:light:1000.svg/NewBrand25/EventType/light/1000'
@@ -284,10 +284,10 @@
             if (eventText.includes('هدف عكسي')) return 'هدف عكسي';
             if (eventText.includes('الهدف الغي')) return 'الهدف الغي';
             if (eventText.includes('هدف ركلة جزاء')) return 'ركلة جزاء';
-            if (eventText.includes('إضاعة الضّربات الجّزائيّة')) return 'ضربة جزاء ضائعة';
+            if (eventText.includes('إضاعة الضّربات الجّزائيّة')) return 'ركلة جزاء ضائعة';
             if (eventText.includes('هدف')) return 'هدف';
             if (eventText.includes('بطاقة صفراء')) return 'بطاقة صفراء';
-            if (eventText.includes('بطاقتين')) return 'بطاقتين';
+            if (eventText.includes('بطاقتين')) return 'البطاقة الثانية';
             if (eventText.includes('بطاقة حمراء')) return 'بطاقة حمراء';
             if (eventText.includes('تسديدة')) return 'تسديدة في العارضة';
             if (eventText.includes('تبديل')) return 'استبدال';
