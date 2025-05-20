@@ -45,12 +45,25 @@ function createSliders(groupedChannels, mainContainer) {
                 const sliderItem = document.createElement('div');
                 sliderItem.className = 'slider-item';
 
+                // Create wrapper for image and caption
+                const imageWrapper = document.createElement('div');
+                imageWrapper.className = 'image-caption-wrapper';
+
                 const img = document.createElement('img');
                 img.src = channel.logo;
                 img.alt = channel.name;
                 img.className = 'slider-item-img';
                 img.dataset.channelId = channel.id;
-                sliderItem.appendChild(img);
+
+                // Create caption
+                const caption = document.createElement('div');
+                caption.className = 'channel-caption';
+                caption.textContent = channel.name;
+
+                // Add image and caption to wrapper
+                imageWrapper.appendChild(img);
+                imageWrapper.appendChild(caption);
+                sliderItem.appendChild(imageWrapper);
 
                 slider.appendChild(sliderItem);
             });
