@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function() {
     playButton.id = 'playButton';
     playButton.textContent = 'مشاهدة | PLAY';
     playButton.style.cssText = 'background-color: green; color: white; text-align: center; padding: 10px;border-radius: 5px; cursor: pointer; margin-top: 10px; width: 280px; margin-left: auto; margin-right: auto;';
-    document.querySelector('.modal-content').insertAdjacentElement('afterend', playButton);
+    document.querySelector('.image-wrapper').appendChild(playButton);
 
     playButton.addEventListener('click', function() {
         if (currentChannelId) {
