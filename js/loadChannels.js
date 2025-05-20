@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
     }
 
-    fetch('https://alameed-api.alameedtv.workers.dev/') // Ensure the correct endpoint is used
+    fetch('https://api.zxx3111.workers.dev/') // Ensure the correct endpoint is used
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
