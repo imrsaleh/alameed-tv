@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     if (channelId) {
         // Fetch channel details from the API with the specific id
-        fetch(`https://alameed-api.alameedtv.workers.dev/?id=${channelId}`)
+        fetch(`https://api.zxx3111.workers.dev/?id=${channelId}`)
             .then(response => response.json())
             .then(data => {
                 if (data.status === "success" && data.data) {
