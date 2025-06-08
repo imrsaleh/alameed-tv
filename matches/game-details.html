@@ -233,7 +233,7 @@
             const container = document.getElementById('eventsContainer');
             container.innerHTML = `
                 <div class="match-header">
-                    <h2>${game.competitionDisplayName}</h2>
+                    <h1>${game.competitionDisplayName}${game.winDescription ? ` - (${game.winDescription})` : ''}</h1>
                 </div>
                 
                 <div class="teams-container">
