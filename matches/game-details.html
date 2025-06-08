@@ -15,7 +15,7 @@
         /* التنسيقات العامة */
         body {
             font-size: 14px; /* حجم النص العام */
-            background-color: rgb(15, 60, 66);
+            background-color: #151e22;
         }
 
         .loading-message {
@@ -30,9 +30,9 @@
             max-width: 800px;
             margin: 20px auto;
             padding: 15px;
-            background: white;
+            background: #2b2d42;
+            color:  white;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
     
         .match-header {
@@ -78,7 +78,7 @@
         .score-container {
             font-size: 24px; /* حجم النتيجة */
             font-weight: bold;
-            color: var(--primary-color);
+            color:  white;
         }
     
         .timeline-event {
@@ -88,6 +88,7 @@
             align-items: center;
             margin: 15px 0;
             position: relative;
+            
         }
     
         .event-home {
@@ -117,21 +118,20 @@
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            background: white;
             padding: 0 10px;
-            color: var(--secondary-color);
+            color:  white;
             font-size: 12px; /* حجم وقت الحدث */
         }
     
         .event-player {
             font-size: 14px; /* حجم اسم اللاعب */
             font-weight: 500;
-            color: var(--primary-color);
+            color:  white;
         }
     
         .event-type {
             font-size: 12px; /* حجم نوع الحدث */
-            color: var(--secondary-color);
+            color:  white;
         }
     
         .substitution-arrow {
@@ -183,16 +183,16 @@
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         const eventIcons = {
-            'هدف': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:light:1.svg/NewBrand25/EventSubType/light/1',
-            'هدف عكسي': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:light:1.svg/NewBrand25/EventSubType/light/2',
-            'الهدف الغي': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:light:11.svg/NewBrand25/EventSubType/light/25',
-            'ركلة جزاء': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:light:1.svg/NewBrand25/EventSubType/light/3',
-            'ركلة جزاء ضائعة': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:light:6.svg/NewBrand25/EventType/light/6',
-            'بطاقة صفراء': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:light:2.svg/NewBrand25/EventType/light/2',
+            'هدف': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:dark:1.svg/NewBrand25/EventSubType/dark/1',
+            'هدف عكسي': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:dark:1.svg/NewBrand25/EventSubType/dark/2',
+            'الهدف الغي': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:dark:11.svg/NewBrand25/EventSubType/dark/25',
+            'ركلة جزاء': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:dark:1.svg/NewBrand25/EventSubType/dark/3',
+            'ركلة جزاء ضائعة': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:dark:6.svg/NewBrand25/EventType/dark/6',
+            'بطاقة صفراء': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:dark:2.svg/NewBrand25/EventType/dark/2',
             'البطاقة الثانية': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:dark:3.svg/NewBrand25/EventSubType/dark/21',
-            'بطاقة حمراء': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:light:3.svg/NewBrand25/EventType/light/3',
-            'تسديدة في العارضة': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:light:12.svg/NewBrand25/EventType/light/12',
-            'استبدال': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:light:1000.svg/NewBrand25/EventType/light/1000'
+            'بطاقة حمراء': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:dark:3.svg/NewBrand25/EventType/dark/3',
+            'تسديدة في العارضة': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:dark:12.svg/NewBrand25/EventType/dark/12',
+            'استبدال': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:dark:1000.svg/NewBrand25/EventType/dark/1000'
         };
 
             // دالة لاستخراج المعلمة من رابط الصفحة
@@ -308,7 +308,6 @@
         function renderRegularEvent(event) {
             return `
                 <div class="event-player">${event.player}</div>
-                <div class="event-type">${getEventType(event.event)}</div>
             `;
         }
 
