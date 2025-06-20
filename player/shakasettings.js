@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // Fetch channel details from the API with the specific id
-        fetch(`https://api.zxx3111.workers.dev/channel?id=${channelId}`)
+        fetch(`https://alameed-api.alameedtv.workers.dev/channel?id=${channelId}`)
             .then(response => response.json())
             .then(async (data) => {
                 if (data.status === "success" && data.data) {
