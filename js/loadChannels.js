@@ -54,6 +54,7 @@ function createSliders(groupedChannels, mainContainer) {
                 img.alt = channel.name;
                 img.className = 'slider-item-img';
                 img.dataset.channelId = channel.id;
+                img.loading = 'lazy';
 
                 // Create caption
                 const caption = document.createElement('div');
