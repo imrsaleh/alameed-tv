@@ -1,0 +1,246 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Arial Arabic', Tahoma, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #151e22;
+    color: white;
+    padding: 20px;
+}
+.tabs-container {
+    
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    padding: 8px 20px;
+    border-radius: 20px;
+    color: white;
+    background: #2a3437;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.tab-btn.active {
+    background: #2b2d42;
+    border-color: white;
+}
+
+/* بقية الأنماط كما هي مع إضافة */
+.match-card.hidden {
+    display: none;
+}
+
+.matches-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.match-card {
+    display: block;
+    text-decoration: none;
+    background: #2b2d42;
+    border-radius: 12px;
+    margin: 10px 0;
+    padding: 15px;
+}
+
+.match-card .competition-name,
+.match-card .teams-container,
+.match-card .match-status {
+    margin-bottom: 10px;
+}
+
+.match-card .competition-name a,
+.match-card .teams-container a,
+.match-card .match-status a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.match-card .team {
+    display: flex;
+    align-items: center;
+}
+
+.match-card .team-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.match-card .team-name {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.match-card .score {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+.match-card .not-started {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 10px;
+    color: white;
+}
+
+.match-card .aggregate-text,
+.match-card .win-description {
+    font-size: 12px;
+    color: silver;
+}
+
+.match-card .status-text {
+    font-size: 12px;
+    color: gray;
+}
+
+.match-card .time-container {
+    font-size: 12px;
+    color: silver;
+}
+
+.match-card:hover {
+    transform: translateY(-3px);
+}
+
+.competition-name {
+    color: white;
+    font-size: 14px;
+    margin-bottom: 15px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e9ecef;
+    text-align: center;
+}
+
+.teams-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    margin: 20px 0;
+}
+
+.team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 150px;
+}
+
+.team-logo {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 12px;
+    object-fit: contain;
+}
+
+.team-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    text-align: center;
+    line-height: 1.3;
+    max-width: 120px;
+    word-wrap: break-word;
+}
+
+.score {
+    font-size: 36px;
+    font-weight: 700;
+    margin: 0 25px;
+    color: white;
+    min-width: 110px;
+    text-align: center;
+}
+
+.match-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: rgb(216, 216, 216);
+    font-size: 14px;
+    padding-top: 15px;
+    margin-top: 15px;
+    border-top: 1px solid #e9ecef;
+}
+
+.live-status {
+    color: red !important;
+    font-weight: 700;
+    animation: pulse 1.5s infinite;
+}
+
+.time-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.not-started {
+    white-space: nowrap;
+    font-size: 24px;
+    color: #6c757d;
+    font-weight: 600;
+    margin: 0 25px;
+}
+.aggregate-text {
+    color: #6c757d;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.win-description {
+    color: #2b2d42;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 10px;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+@media (max-width: 576px) {
+    .team-logo {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .score {
+        font-size: 28px;
+        margin: 0 15px;
+    }
+    
+    .team-name {
+        font-size: 13px;
+    }
+}
+
+.loading-message {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    border-radius: 5px;
+    font-size: 18px;
+    z-index: 1000;
+}

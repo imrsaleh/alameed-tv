@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>AL-AMEED TV</title>
+    <link rel="stylesheet" type="text/css" href="css/1.9.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="css/moreinfo.css"/>
+    <link rel="stylesheet" type="text/css" href="css/cover.css"/>
+    <link rel="stylesheet" type="text/css" href="css/header.css"/>
+    <link rel="stylesheet" type="text/css" href="css/loader.css"/>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.1/jquery-migrate.min.js"></script>
+    <!--<script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@0.3.7/disable-devtool.min.js'></script>-->
+    <script type="text/javascript" src="js/slick.min.js"></script>
+</head>
+<body>
+
+    <!-- Loader element -->
+    <div id="loader-background"></div>
+    <div id="loader"></div>
+
+    <!-- Main content to be shown after loading -->
+    <div class="header">
+        <a class="logo">Alameed Tv</a>
+        <div class="header-right">
+        <a href="matches/matches.html">جدول المباريات</a>
+        <!--<a href="#contact">اتصل بنا</a>-->
+        <a class="active" href="index.html">الرئيسية</a>
+        
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="image-container"><img src="logo/main_logo.png" alt="Cover Image"></div>
+        <div class="coveralert">في الوقت الحالي نعمل فقط على دعم نظام ويندوز و أندرويد</div>
+        <div class="icon-container">
+            <i class="fa-brands fa-android fa-2xl" style="color: #63E6BE;"></i>
+            <i class="fa-brands fa-windows fa-2xl" style="color: #74C0FC;"></i>
+        </div>
+    </div>
+
+    <section class="channel-section">
+        <div class="cannels main"></div>
+    </section>
+    
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <div class="image-wrapper" style="position: relative;">
+            <img class="modal-content" id="img01">
+            <div id="caption"></div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="js/sliderssettings.js"></script>
+    <script type="text/javascript" src="js/loadChannels.js"></script>
+    <script type="text/javascript" src="js/moreinfo.js"></script>
+</body>
+</html>

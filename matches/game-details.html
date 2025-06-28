@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/header.css">
+    <title>تفاصيل المباراة</title>
+    <style>
+        :root {
+            --primary-color: #2D2D2D;
+            --secondary-color: #5A5A5A;
+            --accent-color: #00B2A9;
+        }
+    
+        /* التنسيقات العامة */
+        body {
+            font-size: 14px; /* حجم النص العام */
+            background-color: #151e22;
+        }
+
+        .loading-message {
+            text-align: center;
+            padding: 20px;
+            font-size: 16px;
+            color:rgb(158, 157, 157);
+        }
+
+
+        .events-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 15px;
+            background: #2b2d42;
+            color:  white;
+            border-radius: 12px;
+        }
+    
+        .match-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #EEE;
+        }
+    
+        .match-header h2 {
+            font-size: 18px; /* حجم عنوان المباراة */
+        }
+    
+        .teams-container {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 20px;
+            flex-wrap: wrap; /* إضافة هذه الخاصية */
+        }
+    
+        .team {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+    
+        .team h3 {
+            font-size: 16px; /* حجم أسماء الفرق */
+            margin: 10px 0 0;
+
+        }
+
+        .team-logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+    
+        .score-container {
+            font-size: 24px; /* حجم النتيجة */
+            font-weight: bold;
+            color:  white;
+        }
+    
+        .timeline-event {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            position: relative;
+            
+        }
+    
+        .event-home {
+            flex-direction: row-reverse;
+            margin-left: auto;
+        }
+    
+        .event-away {
+            flex-direction: row;
+            margin-right: auto;
+        }
+    
+        .event-icon {
+            width: 25px; /* حجم الأيقونة */
+            height: 25px;
+            margin: 0 10px;
+        }
+    
+        .event-details {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 120px;
+        }
+    
+        .event-time {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0 10px;
+            color:  white;
+            font-size: 12px; /* حجم وقت الحدث */
+        }
+    
+        .event-player {
+            font-size: 14px; /* حجم اسم اللاعب */
+            font-weight: 500;
+            color:  white;
+        }
+    
+        .event-type {
+            font-size: 12px; /* حجم نوع الحدث */
+            color:  white;
+        }
+    
+        .substitution-arrow {
+            font-size: 20px;
+            margin: 0 5px;
+        }
+    
+        /* استعلامات الوسائط للشاشات الصغيرة */
+        @media (max-width: 600px) {
+            .teams-container {
+                flex-wrap: nowrap; /* منع الالتفاف */
+                gap: 10px; /* تقليل المسافة بين العناصر */
+                padding: 10px; /* تقليل الحشوة */
+                justify-content: center; /* توسيط العناصر */
+            }
+    
+            .team {
+                flex: none; /* منع التمدد التلقائي */
+                width: 35%; /* تحديد عرض ثابت للفرق */
+            }
+    
+            .team-logo {
+                width: 30px !important; /* تصغير الشعارات */
+                height: 30px !important;
+            }
+    
+            .score-container {
+                font-size: 18px !important; /* تصغير النتيجة */
+                order: 0; /* وضع النتيجة في المنتصف */
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a class="logo">Alameed Tv</a>
+        <div class="header-right">
+            <a class="active" href="../index.html">الصفحة الرئيسية</a>
+        </div>
+    </div>
+    <div class="events-header" id="events-header">
+        <h1 style="text-align: center; font-size: 24px; font-weight: bold; margin-bottom: 20px; color:#ffffff">مجريات المباراة</h1>
+    </div>
+    <div id="loadingMessage" class="loading-message">جاري التحميل...</div>
+    <div class="events-container" id="eventsContainer"></div>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const eventIcons = {
+            'هدف': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:dark:1.svg/NewBrand25/EventSubType/dark/1',
+            'هدف عكسي': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:dark:1.svg/NewBrand25/EventSubType/dark/2',
+            'الهدف الغي': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:dark:11.svg/NewBrand25/EventSubType/dark/25',
+            'ركلة جزاء': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:dark:1.svg/NewBrand25/EventSubType/dark/3',
+            'ركلة جزاء ضائعة': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:dark:6.svg/NewBrand25/EventType/dark/6',
+            'بطاقة صفراء': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:dark:2.svg/NewBrand25/EventType/dark/2',
+            'البطاقة الثانية': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:dark:3.svg/NewBrand25/EventSubType/dark/21',
+            'بطاقة حمراء': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:dark:3.svg/NewBrand25/EventType/dark/3',
+            'تسديدة في العارضة': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:dark:12.svg/NewBrand25/EventType/dark/12',
+            'استبدال': 'https://imagecache.365scores.com/image/upload/f_svg,w_16,h_16,c_limit,q_auto:eco,dpr_1,d_NewBrand25:EventTypes:dark:1000.svg/NewBrand25/EventType/dark/1000'
+        };
+
+            // دالة لاستخراج المعلمة من رابط الصفحة
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+        const loadingMessage = document.getElementById('loadingMessage');
+        loadingMessage.style.display = 'block'; // عرض رسالة الانتظار
+    
+        async function fetchEvents() {
+            try {
+                const gameid = getQueryParam('gameid');
+                const response = await fetch(`https://football-api.alameedtv.workers.dev/v1/json_format/gameinfo?gameid=${gameid}`);
+                const data = await response.json();
+                if (!data.games || !data.events) {
+                    showErrorMessage('البيانات غير متوفرة');
+                    return;
+                }
+                renderMatchDetails(data);
+            } catch (error) {
+                console.error('خطأ في جلب البيانات:', error);
+                showErrorMessage('حدث خطأ أثناء جلب البيانات');
+            } finally {
+                loadingMessage.style.display = 'none'; // إخفاء رسالة الانتظار
+            }
+        }
+
+        function showErrorMessage(message) {
+            const container = document.getElementById('eventsContainer');
+            container.innerHTML = `<div class="loading-message">${message}</div>`;
+        }
+
+        function renderMatchDetails(data) {
+            const game = data.games[0];
+            const events = data.events;
+            
+            const container = document.getElementById('eventsContainer');
+            container.innerHTML = `
+                <div class="match-header">
+                    <h1>${game.competitionDisplayName}${game.winDescription ? ` - (${game.winDescription})` : ''}</h1>
+                </div>
+                
+                <div class="teams-container">
+                    <div class="team">
+                        <img class="team-logo" src="${game.first_team_logo}" alt="${game.first_team}">
+                        <h3>${game.first_team}</h3>
+                    </div>
+                    
+                    <div class="score-container">${game.first_team_score} - ${game.second_team_score}</div>
+                    
+                    <div class="team">
+                        <img class="team-logo" src="${game.second_team_logo}" alt="${game.second_team}">
+                        <h3>${game.second_team}</h3>
+                    </div>
+                </div>
+                
+                <div class="events-timeline" id="timeline"></div>
+            `;
+
+            const timeline = document.getElementById('timeline');
+            
+            // عكس ترتيب الأحداث
+            events.reverse().forEach(event => {
+                if (event.event === null || event.eventTime === null || event.player === null || event.teamID === null) {
+                    timeline.innerHTML = `<div class="loading-message">${game.statusText}</div>`;
+                    return;
+                }
+
+                const isHomeTeam = event.teamID === game.first_team_id;
+                const eventType = getEventType(event.event);
+                
+                const eventElement = document.createElement('div');
+                eventElement.className = `timeline-event ${isHomeTeam ? 'event-away' : 'event-home'}`;
+                
+                eventElement.innerHTML = `
+                    <span class="event-time">${event.eventTime}'</span>
+                    <div class="event-details">
+                        ${eventType === 'استبدال' ? renderSubstitution(event) : renderRegularEvent(event)}
+                    </div>
+                    <img class="event-icon" src="${getEventIcon(eventType)}" alt="${eventType}">
+                `;
+                
+                timeline.appendChild(eventElement);
+            });
+        } 
+
+        function getEventType(eventText) {
+            if (eventText.includes('هدف عكسي')) return 'هدف عكسي';
+            if (eventText.includes('الهدف الغي')) return 'الهدف الغي';
+            if (eventText.includes('هدف ركلة جزاء')) return 'ركلة جزاء';
+            if (eventText.includes('إضاعة الضّربات الجّزائيّة')) return 'ركلة جزاء ضائعة';
+            if (eventText.includes('هدف')) return 'هدف';
+            if (eventText.includes('بطاقة صفراء')) return 'بطاقة صفراء';
+            if (eventText.includes('بطاقتين')) return 'البطاقة الثانية';
+            if (eventText.includes('بطاقة حمراء')) return 'بطاقة حمراء';
+            if (eventText.includes('تسديدة')) return 'تسديدة في العارضة';
+            if (eventText.includes('تبديل')) return 'استبدال';
+            return 'default';
+        }
+
+        function getEventIcon(eventType) {
+            return eventIcons[eventType] || eventIcons.default;
+        }
+
+        function renderSubstitution(event) {
+            return `
+                <div class="event-player">${event.playerIN}</div>
+                <div class="event-type">${event.playerOUT}</div>
+            `;
+        }
+
+        function renderRegularEvent(event) {
+            return `
+                <div class="event-player">${event.player}</div>
+            `;
+        }
+
+        fetchEvents();
+    });
+    </script>
+</body>
+</html>
