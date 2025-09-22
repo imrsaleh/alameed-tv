@@ -223,7 +223,11 @@
             `<div class="win-description">${game.winDescription}</div>` : '';
     
         matchCard.innerHTML = `
-            <div class="competition-name">${game.competitionDisplayName}</div>
+            <div class="competition-name">
+                <a href="league-games.html?league=${game.competitionId}">
+                    ${game.competitionDisplayName}
+                </a>
+            </div>
             
             <div class="teams-container">
                 <div class="team">
