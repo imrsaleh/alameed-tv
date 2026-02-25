@@ -687,8 +687,8 @@
       .vs-display {
         font-size: 18px;
         font-weight: 800;
-        color: var(--text-muted);
-        letter-spacing: 2px;
+        color: var(--text-secondary);
+        letter-spacing: 1px;
       }
       .status-badge {
         font-size: 11px;
@@ -716,14 +716,14 @@
         }
       }
       .match-time {
-        font-size: 11px;
-        color: var(--text-muted);
+        font-size: 15px;
+        color: var(--text-primary);
         direction: ltr;
       }
       .comp-name {
-        font-size: 10px;
-        color: var(--text-muted);
-        max-width: 90px;
+        font-size: 16px;
+        color: var(--text-secondary);
+        /* max-width: 90px; */
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -1386,8 +1386,8 @@
 
         const homeDiv = document.createElement("div");
         homeDiv.className = "team-side right";
-        homeDiv.appendChild(homeName);
         homeDiv.appendChild(homeLink);
+        homeDiv.appendChild(homeName);
 
         // ── Away side ──────────────────────────────────────────────
         const awayLink = document.createElement("a");
