@@ -938,13 +938,17 @@
       /* ── LIVE REFRESH ── */
       function refreshLive() {
         const hero = document.querySelector(".hero-card");
-        if (!hero) return;
+        if (
+          !game.statusText.includes("انتهت") &&
+          !game.statusText.includes("لم تبدأ")
+        )
+          return;
         // Only re-render timeline, keep hero too to get score updates
         fetchGame();
       }
 
       fetchGame();
-      setInterval(refreshLive, 15000);
+      setInterval(refreshLive, 20000);
     </script>
   </body>
 </html>
