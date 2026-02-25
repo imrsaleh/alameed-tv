@@ -764,6 +764,68 @@
         }
       }
 
+      /* FILTER ROW */
+      .filter-row {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 900px;
+        margin: 0 auto 14px;
+        padding: 0 16px;
+        gap: 10px;
+        min-height: 32px;
+      }
+      .filter-info {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text-muted);
+        letter-spacing: 0.8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .filter-fav-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: var(--gold-glow);
+        border: 1px solid var(--gold);
+        color: var(--gold);
+        font-size: 11px;
+        font-weight: 700;
+        padding: 2px 10px;
+        border-radius: 20px;
+        animation: popIn 0.2s ease;
+      }
+      .show-all-btn {
+        background: none;
+        border: 1px solid var(--border);
+        color: var(--text-secondary);
+        font-family: "Tajawal", sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 5px 14px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+        display: none;
+      }
+      .show-all-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .show-all-btn.active {
+        background: var(--accent);
+        color: #000;
+        border-color: var(--accent);
+      }
+      body.fav-filter-active .show-all-btn {
+        display: inline-block;
+      }
+
       /* STATES */
       .loading-state {
         position: relative;
@@ -880,6 +942,14 @@
       <div class="date-arrow" id="navNext" onclick="shiftDate(1)">&#8249;</div>
     </div>
 
+    <!-- FILTER ROW -->
+    <div class="filter-row" id="filterRow">
+      <div class="filter-info" id="filterInfo"></div>
+      <button class="show-all-btn" id="showAllBtn" onclick="toggleShowAll()">
+        عرض الكل
+      </button>
+    </div>
+
     <!-- FAV MODAL -->
     <div
       class="modal-overlay"
@@ -969,6 +1039,7 @@
 
       /* ═══ DATE NAVIGATION ═══ */
       let selectedDate = todayStr();
+      let showAll = false;
 
       function todayStr() {
         return new Date().toISOString().split("T")[0];
@@ -1089,6 +1160,13 @@
       }
 
       function toggleFavFilter() {
+        // reset showAll when toggling fav filter
+        showAll = false;
+        const btn = document.getElementById("showAllBtn");
+        if (btn) {
+          btn.classList.remove("active");
+          btn.textContent = "عرض الكل";
+        }
         setFavFilter(!getFavFilter());
         refreshFavUI();
         filterByCurrentDate();
@@ -1313,13 +1391,53 @@
       }
 
       /* ═══ FILTERING ═══ */
+      function toggleShowAll() {
+        showAll = !showAll;
+        const btn = document.getElementById("showAllBtn");
+        btn.classList.toggle("active", showAll);
+        btn.textContent = showAll ? "عرض اليوم فقط" : "عرض الكل";
+        filterByCurrentDate();
+      }
+
+      function updateFilterRow() {
+        const favFilter = getFavFilter();
+        const favs = getFavs();
+        const info = document.getElementById("filterInfo");
+
+        // toggle body class so CSS shows/hides the button
+        document.body.classList.toggle(
+          "fav-filter-active",
+          favFilter && favs.length > 0,
+        );
+
+        if (favFilter && favs.length > 0) {
+          const count = document.querySelectorAll(
+            ".match-card:not(.hidden)",
+          ).length;
+          info.innerHTML = `
+            <span class="filter-fav-indicator">★ المفضلة</span>
+            <span>${showAll ? "جميع المباريات" : "اليوم"}</span>
+          `;
+        } else {
+          info.innerHTML = "";
+          // reset showAll if fav filter turned off
+          showAll = false;
+          const btn = document.getElementById("showAllBtn");
+          btn.classList.remove("active");
+          btn.textContent = "عرض الكل";
+        }
+      }
+
       function filterByCurrentDate() {
         const favFilter = getFavFilter();
         const favs = getFavs();
         let visible = 0;
 
         document.querySelectorAll(".match-card").forEach((c) => {
-          let show = c.dataset.date === selectedDate;
+          // date filter: skip if showAll is on
+          let show = showAll || c.dataset.date === selectedDate;
+
+          // fav filter on top
           if (show && favFilter && favs.length > 0) {
             if (!favs.includes(c.dataset.t1) && !favs.includes(c.dataset.t2))
               show = false;
@@ -1332,10 +1450,19 @@
           document.getElementById("loadingState").style.display !== "none";
         const empty = document.getElementById("emptyState");
         empty.style.display = !loading && visible === 0 ? "block" : "none";
-        document.getElementById("emptyMsg").textContent =
-          favFilter && favs.length > 0
-            ? "لا توجد مباريات لفرقك المفضلة في هذا اليوم"
-            : "لا توجد مباريات في هذا اليوم";
+
+        const favFilter2 = getFavFilter();
+        const favs2 = getFavs();
+        if (favFilter2 && favs2.length > 0) {
+          document.getElementById("emptyMsg").textContent = showAll
+            ? "لا توجد مباريات لفرقك المفضلة"
+            : "لا توجد مباريات لفرقك المفضلة في هذا اليوم";
+        } else {
+          document.getElementById("emptyMsg").textContent =
+            "لا توجد مباريات في هذا اليوم";
+        }
+
+        updateFilterRow();
       }
 
       /* ═══ INIT ═══ */
