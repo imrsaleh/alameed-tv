@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AL-AMEED TV | الفريق</title>
+    <title>AL-AMEED TV | الدوري</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Bebas+Neue&display=swap"
@@ -41,7 +41,6 @@
         min-height: 100vh;
         overflow-x: hidden;
       }
-
       body::before {
         content: "";
         position: fixed;
@@ -86,7 +85,7 @@
       .header-nav {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
       }
       .header-nav a {
         color: var(--text-secondary);
@@ -102,19 +101,15 @@
         background: var(--border);
       }
       .back-btn {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        transition: border-color 0.2s;
+        border: 1px solid var(--border) !important;
+        transition: border-color 0.2s !important;
       }
       .back-btn:hover {
         border-color: var(--border-light) !important;
       }
 
-      /* ── TEAM IDENTITY CARD ── */
-      .team-hero {
+      /* ── LEAGUE HERO ── */
+      .league-hero {
         position: relative;
         z-index: 1;
         max-width: 900px;
@@ -122,115 +117,86 @@
         padding: 0 16px;
         animation: fadeUp 0.45s ease forwards;
       }
-
-      .team-identity {
+      .league-identity {
         background: var(--bg-card);
         border: 1px solid var(--border);
         border-radius: 20px;
-        padding: 28px 28px 22px;
+        padding: 24px 28px;
         position: relative;
         overflow: hidden;
+        display: flex;
+        align-items: center;
+        gap: 20px;
       }
-      .team-identity::before {
+      .league-identity::before {
         content: "";
         position: absolute;
         inset: 0;
         background: radial-gradient(
           ellipse 80% 70% at 50% 0%,
-          rgba(0, 230, 118, 0.05),
+          rgba(0, 230, 118, 0.04),
           transparent 65%
         );
         pointer-events: none;
       }
-
-      .team-identity-inner {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-      }
-
-      .team-logo-large-wrap {
+      .league-emblem {
+        width: 64px;
+        height: 64px;
         flex-shrink: 0;
-        position: relative;
-      }
-      .team-logo-large {
-        width: 80px;
-        height: 80px;
-        object-fit: contain;
-        border-radius: 50%;
+        border-radius: 14px;
         background: var(--bg-surface);
-        padding: 8px;
-        border: 2px solid var(--border);
-      }
-      .team-logo-placeholder {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        background: var(--bg-surface);
-        border: 2px solid var(--border);
+        border: 1px solid var(--border);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 32px;
+        font-size: 30px;
+        overflow: hidden;
       }
-
-      .team-info {
+      .league-emblem img {
+        width: 48px;
+        height: 48px;
+        object-fit: contain;
+      }
+      .league-info {
         flex: 1;
         min-width: 0;
       }
-      .team-name-large {
+      .league-name {
         font-family: "Bebas Neue", sans-serif;
-        font-size: clamp(26px, 5vw, 40px);
+        font-size: clamp(24px, 5vw, 38px);
         letter-spacing: 2px;
         color: var(--text-primary);
         line-height: 1;
-        margin-bottom: 6px;
+        margin-bottom: 5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
-      .team-sub {
+      .league-meta {
         font-size: 13px;
         color: var(--text-secondary);
       }
 
-      /* stats row */
-      .team-stats {
+      /* live badge in hero */
+      .live-hero-badge {
+        flex-shrink: 0;
         display: flex;
-        gap: 0;
-        margin-top: 20px;
-        border-top: 1px solid var(--border);
-        padding-top: 16px;
-      }
-      .stat-item {
-        flex: 1;
-        text-align: center;
-        padding: 0 8px;
-        border-left: 1px solid var(--border);
-      }
-      .stat-item:last-child {
-        border-left: none;
-      }
-      .stat-val {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 26px;
-        letter-spacing: 1px;
-        color: var(--text-primary);
-        line-height: 1;
-      }
-      .stat-val.win {
-        color: var(--accent);
-      }
-      .stat-val.draw {
-        color: var(--gold);
-      }
-      .stat-val.loss {
+        align-items: center;
+        gap: 6px;
+        background: var(--live-glow);
+        border: 1px solid var(--live);
+        border-radius: 20px;
+        padding: 5px 14px;
+        font-size: 12px;
+        font-weight: 700;
         color: var(--live);
       }
-      .stat-label {
-        font-size: 11px;
-        font-weight: 600;
-        color: var(--text-muted);
-        letter-spacing: 0.5px;
-        margin-top: 3px;
-        white-space: nowrap;
+      .live-hero-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--live);
+        animation: dotPulse 1.2s ease infinite;
       }
 
       /* ── DATE NAVIGATOR ── */
@@ -374,7 +340,7 @@
         align-items: center;
         justify-content: space-between;
         max-width: 900px;
-        margin: 0 auto 16px;
+        margin: 0 auto 14px;
         padding: 0 16px;
         gap: 10px;
       }
@@ -407,7 +373,7 @@
         border-color: var(--accent);
       }
 
-      /* ── MATCHES WRAPPER ── */
+      /* ── MATCHES ── */
       .matches-wrapper {
         position: relative;
         z-index: 1;
@@ -419,7 +385,7 @@
         gap: 6px;
       }
 
-      /* ── MATCH CARD ── (identical to matches.html) */
+      /* ── MATCH CARD ── */
       .match-card {
         display: grid;
         grid-template-columns: 1fr auto 1fr;
@@ -460,10 +426,6 @@
           inset 0 0 30px rgba(255, 61, 87, 0.04),
           0 0 0 1px rgba(255, 61, 87, 0.15);
       }
-      /* highlight the team we're viewing */
-      .match-card .team-side.highlight .team-name {
-        color: var(--accent);
-      }
       .match-card.hidden {
         display: none;
       }
@@ -476,7 +438,6 @@
       .team-side.right {
         flex-direction: row-reverse;
       }
-
       .team-logo {
         width: 38px;
         height: 38px;
@@ -546,20 +507,6 @@
         color: var(--text-muted);
         direction: ltr;
       }
-      .comp-name {
-        font-size: 10px;
-        color: var(--text-muted);
-        max-width: 90px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        text-align: center;
-        text-decoration: none;
-        display: block;
-      }
-      .comp-name:hover {
-        color: var(--text-secondary);
-      }
       .aggregate-text,
       .win-description {
         font-size: 11px;
@@ -589,15 +536,27 @@
         }
       }
 
-      /* RESULT INDICATOR on card left edge */
-      .match-card.result-w {
-        border-right: 3px solid var(--accent);
+      /* ── ROUND DIVIDER ── */
+      .round-divider {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 4px 4px;
+        margin-top: 6px;
       }
-      .match-card.result-d {
-        border-right: 3px solid var(--gold);
+      .round-divider span {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-muted);
+        letter-spacing: 1px;
+        white-space: nowrap;
       }
-      .match-card.result-l {
-        border-right: 3px solid var(--live);
+      .round-divider::before,
+      .round-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border);
       }
 
       /* ── STATES ── */
@@ -675,13 +634,13 @@
       }
 
       @media (max-width: 480px) {
-        .team-logo-large {
-          width: 60px;
-          height: 60px;
+        .league-identity {
+          padding: 18px 16px;
+          gap: 14px;
         }
-        .team-logo-placeholder {
-          width: 60px;
-          height: 60px;
+        .league-emblem {
+          width: 52px;
+          height: 52px;
         }
         .match-card {
           padding: 12px 10px;
@@ -707,9 +666,6 @@
         .date-pill .pill-day {
           font-size: 15px;
         }
-        .team-identity-inner {
-          gap: 14px;
-        }
       }
     </style>
   </head>
@@ -718,13 +674,13 @@
     <div class="header">
       <a class="logo">ALAMEED</a>
       <div class="header-nav">
-        <a class="back-btn" href="matches.html">&#8249; المباريات</a>
+        <a class="back-btn" href="index.html">&#8249; المباريات</a>
         <a href="../index.html">الرئيسية</a>
       </div>
     </div>
 
-    <!-- TEAM HERO (injected by JS) -->
-    <div id="teamHero"></div>
+    <!-- LEAGUE HERO (injected) -->
+    <div id="leagueHero"></div>
 
     <!-- DATE NAVIGATOR -->
     <div class="date-nav">
@@ -746,7 +702,7 @@
     <!-- LOADING -->
     <div class="loading-state" id="loadingState">
       <div class="spinner"></div>
-      <p>جاري تحميل مباريات الفريق...</p>
+      <p>جاري تحميل مباريات الدوري...</p>
     </div>
 
     <!-- MATCHES -->
@@ -754,7 +710,7 @@
 
     <!-- EMPTY -->
     <div class="empty-state" id="emptyState">
-      <div class="icon">🏟️</div>
+      <div class="icon">🏆</div>
       <p id="emptyMsg">لا توجد مباريات في هذا اليوم</p>
     </div>
 
@@ -779,23 +735,55 @@
             s.includes("بدلاء"))
         );
       }
-      function isFinished(s) {
-        return s && (s.includes("انتهت") || s.includes("نهاية"));
+      function formatDateAr(ds) {
+        return new Date(ds + "T12:00:00").toLocaleDateString("ar-SA", {
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+        });
       }
 
-      /* ═══ DATE NAV STATE ═══ */
+      /* ═══ STATE ═══ */
       let selectedDate = todayStr();
       let showAll = false;
-      const RANGE = 7;
       let allGames = [];
-      let currentTeamId = null;
+      const RANGE = 7;
 
+      /* ═══ LEAGUE HERO ═══ */
+      function renderLeagueHero(games) {
+        const sample = games[0] || {};
+        const name = sample.competitionDisplayName || "الدوري";
+        const liveCount = games.filter((g) => isLive(g.statusText)).length;
+
+        const liveBadge =
+          liveCount > 0
+            ? `
+        <div class="live-hero-badge">
+            <div class="live-hero-dot"></div>
+            <span>${liveCount} مباشر</span>
+        </div>`
+            : "";
+
+        document.getElementById("leagueHero").innerHTML = `
+        <div class="league-hero">
+            <div class="league-identity">
+                <div class="league-emblem">🏆</div>
+                <div class="league-info">
+                    <div class="league-name">${name}</div>
+                    <div class="league-meta">${games.length} مباراة · جميع الأدوار</div>
+                </div>
+                ${liveBadge}
+            </div>
+        </div>
+    `;
+        document.title = `${name} | ALAMEED TV`;
+      }
+
+      /* ═══ DATE STRIP ═══ */
       function buildDateStrip() {
         const strip = document.getElementById("dateStrip");
         strip.innerHTML = "";
         const today = todayStr();
-
-        // collect dates that have matches
         const matchDates = new Set(allGames.map((g) => g.startyear));
         const liveDates = new Set(
           allGames.filter((g) => isLive(g.statusText)).map((g) => g.startyear),
@@ -805,7 +793,6 @@
           const ds = dateOffset(today, i);
           const d = new Date(ds + "T12:00:00");
           const pill = document.createElement("div");
-
           pill.className =
             "date-pill" +
             (ds === today ? " is-today" : "") +
@@ -815,7 +802,6 @@
               : matchDates.has(ds)
                 ? " has-match"
                 : "");
-
           pill.dataset.date = ds;
 
           let label = "";
@@ -832,10 +818,6 @@
           };
           strip.appendChild(pill);
         }
-        scrollActivePillIntoView();
-      }
-
-      function scrollActivePillIntoView() {
         setTimeout(() => {
           const el = document.querySelector(".date-pill.active");
           if (el)
@@ -875,116 +857,16 @@
         applyFilter();
       }
 
-      /* ═══ STATS from loaded games ═══ */
-      function computeStats(games, teamId) {
-        let w = 0,
-          d = 0,
-          l = 0,
-          played = 0;
-        games.forEach((g) => {
-          if (!isFinished(g.statusText)) return;
-          played++;
-          const isHome = g.first_team_id === teamId;
-          const gs =
-            parseInt(isHome ? g.first_team_score : g.second_team_score) || 0;
-          const opp =
-            parseInt(isHome ? g.second_team_score : g.first_team_score) || 0;
-          if (gs > opp) w++;
-          else if (gs === opp) d++;
-          else l++;
-        });
-        return { w, d, l, played };
-      }
-
-      /* ═══ TEAM HERO ═══ */
-      function renderTeamHero(games, teamId) {
-        // Derive team info from first game containing this team
-        let teamName = "",
-          teamLogo = "";
-        for (const g of games) {
-          if (g.first_team_id === teamId) {
-            teamName = g.first_team;
-            teamLogo = g.first_team_logo;
-            break;
-          }
-          if (g.second_team_id === teamId) {
-            teamName = g.second_team;
-            teamLogo = g.second_team_logo;
-            break;
-          }
-        }
-
-        const stats = computeStats(games, teamId);
-        const logoEl = teamLogo
-          ? `<img class="team-logo-large" src="${teamLogo}" alt="${teamName}" onerror="this.style.visibility='hidden'">`
-          : `<div class="team-logo-placeholder">🏟️</div>`;
-
-        document.getElementById("teamHero").innerHTML = `
-        <div class="team-hero">
-            <div class="team-identity">
-                <div class="team-identity-inner">
-                    <div class="team-logo-large-wrap">${logoEl}</div>
-                    <div class="team-info">
-                        <div class="team-name-large">${teamName || "الفريق"}</div>
-                        <div class="team-sub">مباريات الفريق · جميع البطولات</div>
-                    </div>
-                </div>
-                ${
-                  stats.played > 0
-                    ? `
-                <div class="team-stats">
-                    <div class="stat-item">
-                        <div class="stat-val">${stats.played}</div>
-                        <div class="stat-label">لُعبت</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-val win">${stats.w}</div>
-                        <div class="stat-label">فوز</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-val draw">${stats.d}</div>
-                        <div class="stat-label">تعادل</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-val loss">${stats.l}</div>
-                        <div class="stat-label">خسارة</div>
-                    </div>
-                </div>`
-                    : ""
-                }
-            </div>
-        </div>
-    `;
-
-        // also update page title
-        if (teamName) document.title = `${teamName} | ALAMEED TV`;
-      }
-
-      /* ═══ MATCH CARD ═══ */
-      function buildCard(g, teamId, idx) {
+      /* ═══ CARD BUILD / UPDATE ═══ */
+      function buildCard(g, idx) {
         const card = document.createElement("a");
         card.className = "match-card";
         card.href = `game-details.html?gameid=${g.id}`;
         card.dataset.id = g.id;
         card.dataset.date = g.startyear;
-        card.style.animationDelay = idx * 35 + "ms";
+        card.style.animationDelay = idx * 30 + "ms";
 
         if (isLive(g.statusText)) card.classList.add("is-live");
-
-        // result colour stripe
-        if (isFinished(g.statusText)) {
-          const isHome = g.first_team_id === teamId;
-          const gs =
-            parseInt(isHome ? g.first_team_score : g.second_team_score) || 0;
-          const opp =
-            parseInt(isHome ? g.second_team_score : g.first_team_score) || 0;
-          if (gs > opp) card.classList.add("result-w");
-          else if (gs === opp) card.classList.add("result-d");
-          else card.classList.add("result-l");
-        }
-
-        const isHomeTeam = g.first_team_id === teamId;
-        const isAwayTeam = g.second_team_id === teamId;
 
         const gt = g.gameTime ? ` ${g.gameTime}'` : "";
         const dot = isLive(g.statusText)
@@ -1002,22 +884,19 @@
           : "";
 
         card.innerHTML = `
-        <div class="team-side right ${isHomeTeam ? "highlight" : ""}">
+        <div class="team-side right">
             <div class="team-name">${g.first_team}</div>
             <a href="team-row.html?teamid=${g.first_team_id}" onclick="event.stopPropagation()">
                 <img class="team-logo" src="${g.first_team_logo}" alt="${g.first_team}" onerror="this.style.display='none'">
             </a>
         </div>
-
         <div class="match-center">
             ${score}
             <span class="status-badge ${isLive(g.statusText) ? "live" : ""}">${dot}${g.statusText}${gt}</span>
             <span class="match-time">${g.startTime} • ${g.startyear}</span>
             ${agg}${win}
-            <a class="comp-name" href="league-games.html?league=${g.competitionId}" onclick="event.stopPropagation()">${g.competitionDisplayName}</a>
         </div>
-
-        <div class="team-side left ${isAwayTeam ? "highlight" : ""}">
+        <div class="team-side left">
             <a href="team-row.html?teamid=${g.second_team_id}" onclick="event.stopPropagation()">
                 <img class="team-logo" src="${g.second_team_logo}" alt="${g.second_team}" onerror="this.style.display='none'">
             </a>
@@ -1082,12 +961,13 @@
           .querySelectorAll(".match-card")
           .forEach((c) => existing.set(c.dataset.id, c));
 
+        // Group by round if available, otherwise just append
         games.forEach((g, idx) => {
           const ex = existing.get(g.id);
           if (ex) {
             updateCard(ex, g);
             existing.delete(g.id);
-          } else container.appendChild(buildCard(g, currentTeamId, idx));
+          } else container.appendChild(buildCard(g, idx));
         });
         existing.forEach((c) => c.remove());
       }
@@ -1107,30 +987,21 @@
           ? `جميع المباريات (${cards.length})`
           : `مباريات ${formatDateAr(selectedDate)}`;
 
-        const empty = document.getElementById("emptyState");
         const loading =
           document.getElementById("loadingState").style.display !== "none";
+        const empty = document.getElementById("emptyState");
         empty.style.display = !loading && visible === 0 ? "block" : "none";
         document.getElementById("emptyMsg").textContent = showAll
-          ? "لا توجد مباريات متاحة"
+          ? "لا توجد مباريات في هذا الدوري"
           : "لا توجد مباريات في هذا اليوم";
-      }
-
-      function formatDateAr(ds) {
-        return new Date(ds + "T12:00:00").toLocaleDateString("ar-SA", {
-          weekday: "short",
-          month: "short",
-          day: "numeric",
-        });
       }
 
       /* ═══ API ═══ */
       async function fetchMatches() {
         try {
-          const teamid = getQueryParam("teamid");
-          currentTeamId = teamid;
+          const league = getQueryParam("league");
           const res = await fetch(
-            `https://football-api.alameedtv.workers.dev/v1/son_format?teamid=${teamid}`,
+            `https://football-api.alameedtv.workers.dev/v1/son_format?league=${league}`,
           );
           const data = await res.json();
 
@@ -1138,14 +1009,12 @@
 
           if (!data.games || data.games.length === 0) {
             document.getElementById("matchesContainer").innerHTML =
-              '<div class="error-box">لا توجد بيانات لهذا الفريق</div>';
+              '<div class="error-box">لا توجد بيانات لهذا الدوري</div>';
             return;
           }
 
           allGames = data.games;
-
-          // Initial render
-          renderTeamHero(allGames, teamid);
+          renderLeagueHero(allGames);
           buildDateStrip();
           renderCards(allGames);
           applyFilter();
@@ -1158,13 +1027,19 @@
 
       async function refreshMatches() {
         try {
-          const teamid = getQueryParam("teamid");
+          const league = getQueryParam("league");
           const res = await fetch(
-            `https://football-api.alameedtv.workers.dev/v1/son_format?teamid=${teamid}`,
+            `https://football-api.alameedtv.workers.dev/v1/son_format?league=${league}`,
           );
           const data = await res.json();
           if (!data.games) return;
           allGames = data.games;
+          // update live badge count
+          const liveCount = allGames.filter((g) => isLive(g.statusText)).length;
+          const badge = document.querySelector(".live-hero-badge");
+          if (badge && liveCount > 0)
+            badge.querySelector("span").textContent = `${liveCount} مباشر`;
+          else if (!badge && liveCount > 0) renderLeagueHero(allGames); // re-render if live started
           buildDateStrip();
           renderCards(allGames);
           applyFilter();
@@ -1172,7 +1047,7 @@
       }
 
       /* ═══ INIT ═══ */
-      buildDateStrip(); // build empty strip immediately
+      buildDateStrip();
       fetchMatches();
       setInterval(refreshMatches, 15000);
     </script>
