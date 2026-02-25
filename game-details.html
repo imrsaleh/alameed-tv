@@ -761,6 +761,9 @@
         return base + path;
       }
 
+      /* ── GAME STATE ── */
+      let game;
+
       /* ── RENDER HERO ── */
       function renderHero(game) {
         const live = isLive(game.statusText);
@@ -920,7 +923,7 @@
             return;
           }
 
-          const game = data.games[0];
+          game = data.games[0];
           const events = data.events || [];
 
           renderHero(game);
@@ -937,10 +940,10 @@
 
       /* ── LIVE REFRESH ── */
       function refreshLive() {
-        const hero = document.querySelector(".hero-card");
         if (
-          !game.statusText.includes("انتهت") &&
-          !game.statusText.includes("لم تبدأ")
+          !game ||
+          game.statusText.includes("انتهت") ||
+          game.statusText.includes("لم تبدأ")
         )
           return;
         // Only re-render timeline, keep hero too to get score updates
