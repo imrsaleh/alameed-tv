@@ -1,303 +1,1351 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../css/header.css"/>
-    <link rel="stylesheet" type="text/css" href="../css/match-style.css"/>
-    <title>AL-AMEED TV</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AL-AMEED TV | المباريات</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Bebas+Neue&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-deep: #050810;
+        --bg-surface: #0c1120;
+        --bg-card: #111827;
+        --bg-card-hover: #162036;
+        --accent: #00e676;
+        --accent-glow: #00e67633;
+        --live: #ff3d57;
+        --live-glow: #ff3d5733;
+        --gold: #ffd54f;
+        --gold-glow: #ffd54f22;
+        --text-primary: #f0f4ff;
+        --text-secondary: #8899bb;
+        --text-muted: #3a4f70;
+        --border: #1a2840;
+        --border-light: #263850;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Tajawal", sans-serif;
+        background: var(--bg-deep);
+        color: var(--text-primary);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse 90% 60% at 50% -10%,
+            #0a2040 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 50% 50% at 90% 90%,
+            #001830 0%,
+            transparent 60%
+          );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* HEADER */
+      .header {
+        position: sticky;
+        top: 0;
+        z-index: 200;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        height: 60px;
+        background: rgba(5, 8, 16, 0.9);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border);
+      }
+      .logo {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 24px;
+        letter-spacing: 3px;
+        color: var(--accent);
+        text-decoration: none;
+        text-shadow: 0 0 24px var(--accent-glow);
+      }
+      .header-nav {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .header-nav a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        padding: 6px 14px;
+        border-radius: 8px;
+        transition: all 0.2s;
+      }
+      .header-nav a:hover {
+        color: var(--text-primary);
+        background: var(--border);
+      }
+
+      /* NAV STAR BUTTON */
+      .nav-fav-btn {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: none;
+        border: 1px solid var(--border);
+        color: var(--text-secondary);
+        font-family: "Tajawal", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 6px 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.22s;
+      }
+      .nav-fav-btn:hover {
+        color: var(--gold);
+        border-color: var(--gold);
+        background: var(--gold-glow);
+      }
+      .nav-fav-btn.has-favs {
+        color: var(--gold);
+        border-color: var(--gold);
+        background: var(--gold-glow);
+        box-shadow: 0 0 12px var(--gold-glow);
+      }
+      .nav-fav-btn .star-icon {
+        font-size: 15px;
+        line-height: 1;
+        transition: transform 0.3s;
+      }
+      .nav-fav-btn:hover .star-icon,
+      .nav-fav-btn.has-favs .star-icon {
+        transform: rotate(20deg) scale(1.15);
+      }
+      .nav-fav-dot {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--gold);
+        border: 1.5px solid var(--bg-deep);
+        display: none;
+      }
+      .nav-fav-btn.has-favs .nav-fav-dot {
+        display: block;
+      }
+
+      /* HERO */
+      .hero {
+        position: relative;
+        z-index: 1;
+        padding: 28px 20px 14px;
+        text-align: center;
+      }
+      .hero h1 {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(38px, 7vw, 64px);
+        letter-spacing: 4px;
+        line-height: 1;
+      }
+      .hero h1 em {
+        color: var(--accent);
+        font-style: normal;
+      }
+      .hero p {
+        color: var(--text-secondary);
+        font-size: 13px;
+        margin-top: 6px;
+        min-height: 18px;
+      }
+
+      /* DATE NAVIGATOR */
+      .date-nav {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 0;
+        padding: 0 12px 20px;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      .date-arrow {
+        flex-shrink: 0;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 50%;
+        cursor: pointer;
+        color: var(--text-secondary);
+        font-size: 18px;
+        transition: all 0.2s;
+        user-select: none;
+        line-height: 1;
+      }
+      .date-arrow:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        box-shadow: 0 0 10px var(--accent-glow);
+      }
+      .date-arrow:active {
+        transform: scale(0.9);
+      }
+      .date-strip-wrap {
+        flex: 1;
+        overflow: hidden;
+        position: relative;
+        margin: 0 8px;
+      }
+      .date-strip-wrap::before,
+      .date-strip-wrap::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 28px;
+        z-index: 2;
+        pointer-events: none;
+      }
+      .date-strip-wrap::before {
+        right: 0;
+        background: linear-gradient(to left, var(--bg-deep), transparent);
+      }
+      .date-strip-wrap::after {
+        left: 0;
+        background: linear-gradient(to right, var(--bg-deep), transparent);
+      }
+      .date-strip {
+        display: flex;
+        gap: 6px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        padding: 4px 6px;
+        scrollbar-width: none;
+      }
+      .date-strip::-webkit-scrollbar {
+        display: none;
+      }
+      .date-pill {
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 8px 14px;
+        border-radius: 50px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        cursor: pointer;
+        transition: all 0.2s;
+        min-width: 64px;
+      }
+      .date-pill:hover {
+        border-color: var(--border-light);
+        transform: translateY(-1px);
+      }
+      .date-pill .pill-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text-muted);
+        letter-spacing: 0.5px;
+        line-height: 1;
+        margin-bottom: 2px;
+      }
+      .date-pill .pill-day {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 18px;
+        color: var(--text-secondary);
+        letter-spacing: 1px;
+        line-height: 1;
+      }
+      .date-pill.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        box-shadow:
+          0 0 16px var(--accent-glow),
+          0 4px 12px rgba(0, 230, 118, 0.25);
+      }
+      .date-pill.active .pill-label,
+      .date-pill.active .pill-day {
+        color: #000;
+      }
+      .date-pill.is-today .pill-label {
+        color: var(--accent);
+      }
+      .date-pill.is-today:not(.active) .pill-day {
+        color: var(--text-primary);
+      }
+      .date-pill.has-live::after {
+        content: "";
+        display: block;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--live);
+        margin-top: 3px;
+        animation: pulseDot 1.2s ease infinite;
+      }
+
+      /* FAV FILTER TOGGLE (inside modal) */
+      .fav-filter-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        color: var(--text-secondary);
+        cursor: pointer;
+        user-select: none;
+        padding: 12px 14px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        margin-bottom: 14px;
+        transition: border-color 0.2s;
+        flex-shrink: 0;
+      }
+      .fav-filter-label:hover {
+        border-color: var(--gold);
+      }
+      .toggle-switch {
+        width: 36px;
+        height: 20px;
+        background: var(--border);
+        border-radius: 20px;
+        position: relative;
+        transition: background 0.2s;
+        flex-shrink: 0;
+      }
+      .toggle-switch::after {
+        content: "";
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        background: #fff;
+        border-radius: 50%;
+        top: 3px;
+        right: 3px;
+        transition: transform 0.2s;
+      }
+      .toggle-switch.on {
+        background: var(--gold);
+      }
+      .toggle-switch.on::after {
+        transform: translateX(-16px);
+      }
+      .fav-filter-label .toggle-label {
+        flex: 1;
+      }
+
+      /* MODAL */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 500;
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(6px);
+        display: none;
+        align-items: flex-end;
+        justify-content: center;
+      }
+      .modal-overlay.open {
+        display: flex;
+      }
+      .fav-modal {
+        background: var(--bg-surface);
+        border: 1px solid var(--border-light);
+        border-radius: 24px 24px 0 0;
+        width: 100%;
+        max-width: 560px;
+        padding: 24px 20px 32px;
+        animation: slideUp 0.25s ease;
+        max-height: 82vh;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+      }
+      @keyframes slideUp {
+        from {
+          transform: translateY(40px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      .modal-handle {
+        width: 40px;
+        height: 4px;
+        background: var(--border-light);
+        border-radius: 2px;
+        margin: 0 auto 20px;
+      }
+      .modal-close {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        color: var(--text-secondary);
+        font-size: 16px;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        line-height: 1;
+      }
+      .modal-close:hover {
+        color: var(--text-primary);
+        border-color: var(--border-light);
+      }
+      .modal-title {
+        font-size: 18px;
+        font-weight: 800;
+        margin-bottom: 4px;
+      }
+      .modal-sub {
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin-bottom: 16px;
+      }
+      .fav-search-box {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 0 12px;
+        margin-bottom: 14px;
+        flex-shrink: 0;
+      }
+      .fav-search-box:focus-within {
+        border-color: var(--border-light);
+      }
+      .fav-search-box input {
+        flex: 1;
+        background: none;
+        border: none;
+        outline: none;
+        color: var(--text-primary);
+        font-family: "Tajawal", sans-serif;
+        font-size: 14px;
+        padding: 10px 0;
+      }
+      .fav-search-box input::placeholder {
+        color: var(--text-muted);
+      }
+      .fav-selected-section {
+        margin-bottom: 14px;
+        flex-shrink: 0;
+      }
+      .section-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-muted);
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+      .fav-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        min-height: 20px;
+      }
+      .fav-chip {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--gold-glow);
+        border: 1px solid var(--gold);
+        border-radius: 20px;
+        padding: 4px 10px;
+        font-size: 13px;
+        color: var(--gold);
+        animation: popIn 0.15s ease;
+      }
+      @keyframes popIn {
+        from {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .fav-chip button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--gold);
+        font-size: 13px;
+        line-height: 1;
+        opacity: 0.7;
+        transition: opacity 0.2s;
+        font-family: inherit;
+      }
+      .fav-chip button:hover {
+        opacity: 1;
+      }
+      .no-favs-hint {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+      .team-list {
+        flex: 1;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        scrollbar-width: thin;
+        scrollbar-color: var(--border) transparent;
+      }
+      .team-list-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .team-list-item:hover {
+        background: var(--bg-card);
+      }
+      .team-list-item.selected {
+        background: var(--gold-glow);
+      }
+      .team-list-logo {
+        width: 28px;
+        height: 28px;
+        object-fit: contain;
+        border-radius: 50%;
+        background: var(--bg-card);
+        padding: 3px;
+        flex-shrink: 0;
+      }
+      .team-list-name {
+        font-size: 14px;
+        font-weight: 500;
+        flex: 1;
+      }
+      .team-list-check {
+        width: 18px;
+        height: 18px;
+        border: 2px solid var(--text-muted);
+        border-radius: 50%;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        color: transparent;
+        transition: all 0.2s;
+      }
+      .team-list-item.selected .team-list-check {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: #000;
+      }
+      .no-teams-msg {
+        text-align: center;
+        padding: 24px;
+        color: var(--text-muted);
+        font-size: 13px;
+      }
+
+      /* MATCHES */
+      .matches-wrapper {
+        position: relative;
+        z-index: 1;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 14px 80px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .match-card {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 10px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 15px 18px;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.22s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      .match-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          transparent 55%,
+          rgba(0, 230, 118, 0.02)
+        );
+        pointer-events: none;
+      }
+      .match-card:hover {
+        background: var(--bg-card-hover);
+        border-color: var(--border-light);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
+      }
+      .match-card.is-live {
+        border-color: #ff3d5766;
+        box-shadow:
+          inset 0 0 30px rgba(255, 61, 87, 0.04),
+          0 0 0 1px rgba(255, 61, 87, 0.15);
+      }
+      .match-card.is-fav {
+        border-color: #ffd54f44;
+      }
+      .match-card.is-fav::after {
+        content: "★";
+        position: absolute;
+        top: 9px;
+        left: 12px;
+        font-size: 10px;
+        color: var(--gold);
+        opacity: 0.6;
+      }
+      .match-card.hidden {
+        display: none;
+      }
+      .team-side {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .team-side.right {
+        flex-direction: row-reverse;
+      }
+      .team-logo {
+        width: 38px;
+        height: 38px;
+        object-fit: contain;
+        border-radius: 50%;
+        background: var(--bg-surface);
+        padding: 4px;
+        flex-shrink: 0;
+      }
+      .team-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-primary);
+        line-height: 1.2;
+      }
+      .team-side.right .team-name {
+        text-align: right;
+      }
+      .match-center {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        min-width: 88px;
+      }
+      .score-display {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 30px;
+        letter-spacing: 4px;
+        color: var(--text-primary);
+        line-height: 1;
+      }
+      .vs-display {
+        font-size: 18px;
+        font-weight: 800;
+        color: var(--text-muted);
+        letter-spacing: 2px;
+      }
+      .status-badge {
+        font-size: 11px;
+        font-weight: 700;
+        padding: 2px 10px;
+        border-radius: 20px;
+        background: var(--bg-surface);
+        color: var(--text-muted);
+        border: 1px solid var(--border);
+        white-space: nowrap;
+      }
+      .status-badge.live {
+        background: var(--live-glow);
+        color: var(--live);
+        border-color: var(--live);
+        animation: pulseBadge 1.5s ease infinite;
+      }
+      @keyframes pulseBadge {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(255, 61, 87, 0.3);
+        }
+        50% {
+          box-shadow: 0 0 0 4px rgba(255, 61, 87, 0);
+        }
+      }
+      .match-time {
+        font-size: 11px;
+        color: var(--text-muted);
+        direction: ltr;
+      }
+      .comp-name {
+        font-size: 10px;
+        color: var(--text-muted);
+        max-width: 90px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+        text-decoration: none;
+        display: block;
+        transition: color 0.2s;
+      }
+      .comp-name:hover {
+        color: var(--text-secondary);
+      }
+      .aggregate-text,
+      .win-description {
+        font-size: 11px;
+        color: var(--gold);
+        font-weight: 600;
+        text-align: center;
+      }
+      .live-dot {
+        display: inline-block;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--live);
+        margin-left: 3px;
+        vertical-align: middle;
+        animation: pulseDot 1.2s ease infinite;
+      }
+      @keyframes pulseDot {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.4;
+          transform: scale(0.7);
+        }
+      }
+
+      /* STATES */
+      .loading-state {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        padding: 60px 20px;
+      }
+      .spinner {
+        width: 42px;
+        height: 42px;
+        border: 3px solid var(--border);
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        margin: 0 auto 14px;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .loading-state p {
+        color: var(--text-muted);
+        font-size: 13px;
+      }
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-muted);
+        display: none;
+        position: relative;
+        z-index: 1;
+      }
+      .empty-state .icon {
+        font-size: 44px;
+        margin-bottom: 14px;
+      }
+      .empty-state p {
+        font-size: 14px;
+      }
+      .error-box {
+        text-align: center;
+        padding: 40px;
+        color: var(--live);
+        font-size: 14px;
+        position: relative;
+        z-index: 1;
+      }
+
+      ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 4px;
+      }
+
+      @media (max-width: 480px) {
+        .match-card {
+          padding: 12px 10px;
+          gap: 7px;
+        }
+        .score-display {
+          font-size: 24px;
+        }
+        .team-name {
+          font-size: 12px;
+        }
+        .team-logo {
+          width: 30px;
+          height: 30px;
+        }
+        .match-center {
+          min-width: 70px;
+        }
+        .date-pill {
+          min-width: 54px;
+          padding: 7px 10px;
+        }
+        .date-pill .pill-day {
+          font-size: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
     <div class="header">
-        <a class="logo">Alameed Tv</a>
-        <div class="header-right">
-        <a class="active" href="../index.html">الصفحة الرئيسية</a>
-        
+      <a class="logo">ALAMEED</a>
+      <div class="header-nav">
+        <a class="active" href="../index.html">الرئيسية</a>
+        <button class="nav-fav-btn" id="navFavBtn" onclick="openFavModal()">
+          <span class="nav-fav-dot"></span>
+          <span class="star-icon">★</span>
+          <span>المفضلة</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="hero">
+      <h1>نتائج <em>&</em> مباريات</h1>
+      <p id="heroDate"></p>
+    </div>
+
+    <!-- DATE NAVIGATOR -->
+    <div class="date-nav">
+      <div class="date-arrow" id="navPrev" onclick="shiftDate(-1)">&#8250;</div>
+      <div class="date-strip-wrap">
+        <div class="date-strip" id="dateStrip"></div>
+      </div>
+      <div class="date-arrow" id="navNext" onclick="shiftDate(1)">&#8249;</div>
+    </div>
+
+    <!-- FAV MODAL -->
+    <div
+      class="modal-overlay"
+      id="modalOverlay"
+      onclick="closeFavModalOutside(event)"
+    >
+      <div class="fav-modal">
+        <button class="modal-close" onclick="closeFavModal()">✕</button>
+        <div class="modal-handle"></div>
+        <div class="modal-title">⭐ الفرق المفضلة</div>
+        <div class="modal-sub">
+          اختر الفرق التي تتابعها لتظهر مبارياتها في المقدمة
         </div>
+
+        <label class="fav-filter-label" onclick="toggleFavFilter()">
+          <div class="toggle-switch" id="favToggle"></div>
+          <span class="toggle-label">عرض مباريات فرقي فقط</span>
+        </label>
+
+        <div class="fav-selected-section">
+          <div class="section-label">المختارة</div>
+          <div class="fav-chips" id="modalFavChips">
+            <span class="no-favs-hint">لم تختر أي فريق بعد</span>
+          </div>
+        </div>
+
+        <div class="fav-search-box">
+          <span>🔍</span>
+          <input
+            type="text"
+            id="teamSearch"
+            placeholder="ابحث عن فريق..."
+            oninput="renderTeamList()"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="section-label" style="padding: 0 2px 6px; flex-shrink: 0">
+          جميع الفرق
+        </div>
+        <div class="team-list" id="teamList"></div>
+      </div>
     </div>
 
-    <div class="tabs-container">
-        
-        <button class="tab-btn" data-filter="yesterday">أمس</button>
-        <button class="tab-btn active" data-filter="today">اليوم</button>
-        <button class="tab-btn" data-filter="tomorrow">غداً</button>
-        <button class="tab-btn" data-filter="all">عرض الكل</button>
+    <!-- LOADING -->
+    <div class="loading-state" id="loadingState">
+      <div class="spinner"></div>
+      <p>جاري تحميل المباريات...</p>
     </div>
 
-<div id="loadingMessage" class="loading-message">جاري التحميل...</div>
-    <div class="matches-container" id="matchesContainer"></div>
+    <!-- MATCHES -->
+    <div class="matches-wrapper" id="matchesContainer"></div>
+
+    <!-- EMPTY -->
+    <div class="empty-state" id="emptyState">
+      <div class="icon">🏟️</div>
+      <p id="emptyMsg">لا توجد مباريات في هذا اليوم</p>
+    </div>
 
     <script>
-    // دالة مساعدة للحصول على التواريخ المنسقة
-    function getFormattedDates() {
-        const today = new Date();
-        const yesterday = new Date(today);
-        yesterday.setDate(today.getDate() - 1);
-        
-        const tomorrow = new Date(today);
-        tomorrow.setDate(today.getDate() + 1);
-
-        return {
-            today: today.toISOString().split('T')[0],
-            yesterday: yesterday.toISOString().split('T')[0],
-            tomorrow: tomorrow.toISOString().split('T')[0]
-        };
-    }
-    const loadingMessage = document.getElementById('loadingMessage');
-    loadingMessage.style.display = 'block'; // عرض رسالة الانتظار
-
-
-    // دالة جلب البيانات من API
-    async function fetchMatches() {
+      /* ═══ STORAGE ═══ */
+      const FAV_KEY = "alameed_fav_teams_v2";
+      const FILTER_KEY = "alameed_fav_filter";
+      const getFavs = () => {
         try {
-            const response = await fetch("https://football-api.alameedtv.workers.dev/v1/json_format");
-            const data = await response.json();
-            updateMatches(data.games);
-        } catch (error) {
-            console.error('خطأ في جلب البيانات:', error);
-            showErrorMessage();
-        } finally {
-            loadingMessage.style.display = 'none'; // إخفاء رسالة الانتظار
+          return JSON.parse(localStorage.getItem(FAV_KEY)) || [];
+        } catch {
+          return [];
         }
-    }
+      };
+      const saveFavs = (a) => localStorage.setItem(FAV_KEY, JSON.stringify(a));
+      const isFav = (t) => getFavs().includes(t);
+      const getFavFilter = () => localStorage.getItem(FILTER_KEY) === "true";
+      const setFavFilter = (v) => localStorage.setItem(FILTER_KEY, String(v));
 
-    // دالة عرض رسالة الخطأ
-    function showErrorMessage() {
-        const container = document.getElementById('matchesContainer');
-        container.innerHTML = `
-            <div class="error-message">
-                حدث خطأ في تحميل البيانات، يرجى المحاولة لاحقًا
-            </div>
-        `;
-    }
+      function toggleFav(teamName) {
+        let favs = getFavs();
+        favs = favs.includes(teamName)
+          ? favs.filter((f) => f !== teamName)
+          : [...favs, teamName];
+        saveFavs(favs);
+        refreshFavUI();
+        renderTeamList();
+        applyFavClassesToCards();
+        filterByCurrentDate();
+      }
 
-    // دالة التحديث الذكية للبطاقات
-    function updateMatches(newGames) {
-        const container = document.getElementById('matchesContainer');
-        const existingMatches = new Map();
-        
-        // حفظ البطاقات الحالية
-        container.childNodes.forEach(match => {
-            existingMatches.set(match.dataset.id, match);
+      /* ═══ DATE NAVIGATION ═══ */
+      let selectedDate = todayStr();
+
+      function todayStr() {
+        return new Date().toISOString().split("T")[0];
+      }
+
+      function dateOffset(base, days) {
+        const d = new Date(base + "T12:00:00");
+        d.setDate(d.getDate() + days);
+        return d.toISOString().split("T")[0];
+      }
+
+      function formatDateAr(ds) {
+        return new Date(ds + "T12:00:00").toLocaleDateString("ar-SA", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
         });
+      }
 
-        // حفظ التبويب النشط
-        const activeTab = document.querySelector('.tab-btn.active').dataset.filter;
+      const RANGE = 7;
 
-        // معالجة البيانات الجديدة
-        newGames.forEach(game => {
-            const existingMatch = existingMatches.get(game.id);
+      function buildDateStrip() {
+        const strip = document.getElementById("dateStrip");
+        strip.innerHTML = "";
+        const today = todayStr();
 
-            if (existingMatch) {
-                // تحديث البطاقة الموجودة
-                updateExistingCard(existingMatch, game);
-                existingMatches.delete(game.id);
-            } else {
-                // إضافة بطاقة جديدة
-                container.appendChild(createMatchCard(game));
-            }
-        });
+        for (let i = -RANGE; i <= RANGE; i++) {
+          const ds = dateOffset(today, i);
+          const d = new Date(ds + "T12:00:00");
+          const pill = document.createElement("div");
+          pill.className =
+            "date-pill" +
+            (ds === today ? " is-today" : "") +
+            (ds === selectedDate ? " active" : "");
+          pill.dataset.date = ds;
 
-        // إزالة البطاقات المنتهية
-        existingMatches.forEach((value, key) => {
-            value.remove();
-        });
+          let label = "";
+          if (i === -1) label = "أمس";
+          else if (i === 0) label = "اليوم";
+          else if (i === 1) label = "غداً";
+          else label = d.toLocaleDateString("ar-SA", { weekday: "short" });
 
-        // إعادة تطبيق الفلتر
-        filterMatches(activeTab);
-    }
+          pill.innerHTML = `<span class="pill-label">${label}</span><span class="pill-day">${d.getDate()}</span>`;
+          pill.onclick = () => selectDate(ds);
+          strip.appendChild(pill);
+        }
+        scrollActivePillIntoView();
+      }
 
-    // دالة تحديث البطاقة الموجودة
-    function updateExistingCard(card, game) {
-        // تحديث النتيجة
-        const scoreElement = card.querySelector('.score, .not-started');
-        if (game.statusText === 'لم تبدأ') {
-            if (scoreElement.className !== 'not-started') {
-                scoreElement.replaceWith(createNotStartedElement());
-            }
+      function scrollActivePillIntoView() {
+        setTimeout(() => {
+          const el = document.querySelector(".date-pill.active");
+          if (el)
+            el.scrollIntoView({
+              inline: "center",
+              behavior: "smooth",
+              block: "nearest",
+            });
+        }, 60);
+      }
+
+      function selectDate(ds) {
+        selectedDate = ds;
+        document
+          .querySelectorAll(".date-pill")
+          .forEach((p) => p.classList.toggle("active", p.dataset.date === ds));
+        document.getElementById("heroDate").textContent =
+          ds !== todayStr() ? formatDateAr(ds) : "";
+        filterByCurrentDate();
+      }
+
+      function shiftDate(delta) {
+        const today = todayStr();
+        const newDs = dateOffset(selectedDate, delta);
+        const minDs = dateOffset(today, -RANGE);
+        const maxDs = dateOffset(today, RANGE);
+        selectedDate = newDs < minDs ? minDs : newDs > maxDs ? maxDs : newDs;
+        buildDateStrip();
+        filterByCurrentDate();
+      }
+
+      function markLivePills() {
+        const liveDates = new Set();
+        document
+          .querySelectorAll(".match-card.is-live")
+          .forEach((c) => liveDates.add(c.dataset.date));
+        document
+          .querySelectorAll(".date-pill")
+          .forEach((p) =>
+            p.classList.toggle("has-live", liveDates.has(p.dataset.date)),
+          );
+      }
+
+      /* ═══ FAVORITES UI ═══ */
+      function refreshFavUI() {
+        const favs = getFavs();
+        const navBtn = document.getElementById("navFavBtn");
+        if (navBtn) navBtn.classList.toggle("has-favs", favs.length > 0);
+
+        document
+          .getElementById("favToggle")
+          .classList.toggle("on", getFavFilter());
+
+        const chipsEl = document.getElementById("modalFavChips");
+        if (favs.length === 0) {
+          chipsEl.innerHTML =
+            '<span class="no-favs-hint">لم تختر أي فريق بعد</span>';
         } else {
-            const newScore = `${game.first_team_score} - ${game.second_team_score}`;
-            if (scoreElement.textContent !== newScore) {
-                if (scoreElement.className === 'not-started') {
-                    scoreElement.replaceWith(createScoreElement(newScore));
-                } else {
-                    scoreElement.textContent = newScore;
-                }
-            }
+          chipsEl.innerHTML = "";
+          favs.forEach((name) => {
+            const ch = document.createElement("div");
+            ch.className = "fav-chip";
+            ch.innerHTML = `<span>${name}</span><button onclick="toggleFav('${name.replace(/'/g, "\\'")}')">✕</button>`;
+            chipsEl.appendChild(ch);
+          });
         }
-    
-        // تحديث الحالة
-        const statusElement = card.querySelector('.status-text');
-        const newStatus = `${game.statusText}${game.gameTime ? ` | ${game.gameTime}'` : ''}`;
-        if (statusElement.textContent !== newStatus) {
-            statusElement.textContent = newStatus;
-            statusElement.className = game.statusText.includes('شوط') ? 
-                'status-text live-status' : 'status-text';
-        }
-    
-        // تحديث الوقت
-        const timeElement = card.querySelector('.time-container');
-        const newTime = `${game.startyear} • ${game.startTime}`;
-        if (timeElement.textContent !== newTime) {
-            timeElement.textContent = newTime;
-        }
-    
-        // تحديث aggregateText إذا كانت القيمة ليست null
-        const aggregateTextElement = card.querySelector('.aggregate-text');
-        if (game.aggregateText) {
-            if (!aggregateTextElement) {
-                const newAggregateText = document.createElement('div');
-                newAggregateText.className = 'aggregate-text';
-                newAggregateText.textContent = game.aggregateText;
-                card.insertBefore(newAggregateText, card.querySelector('.match-status'));
-            } else {
-                aggregateTextElement.textContent = game.aggregateText;
-            }
-        } else if (aggregateTextElement) {
-            aggregateTextElement.remove();
-        }
-    
-        // تحديث winDescription إذا كانت القيمة ليست null
-        const winDescriptionElement = card.querySelector('.win-description');
-        if (game.winDescription) {
-            if (!winDescriptionElement) {
-                const newWinDescription = document.createElement('div');
-                newWinDescription.className = 'win-description';
-                newWinDescription.textContent = game.winDescription;
-                card.insertBefore(newWinDescription, card.querySelector('.match-status'));
-            } else {
-                winDescriptionElement.textContent = game.winDescription;
-            }
-        } else if (winDescriptionElement) {
-            winDescriptionElement.remove();
-        }
-    
-        // تحديث التاريخ للفلترة
-        card.dataset.date = game.startyear;
-    }
+      }
 
-    // دالة إنشاء عنصر النتيجة
-    function createScoreElement(score) {
-        const element = document.createElement('div');
-        element.className = 'score';
-        element.textContent = score;
-        return element;
-    }
+      function toggleFavFilter() {
+        setFavFilter(!getFavFilter());
+        refreshFavUI();
+        filterByCurrentDate();
+      }
 
-    // دالة إنشاء عنصر "لم تبدأ"
-    function createNotStartedElement() {
-        const element = document.createElement('div');
-        element.className = 'not-started';
-        element.textContent = 'لم تبدأ';
-        return element;
-    }
+      /* ═══ MODAL ═══ */
+      function openFavModal() {
+        document.getElementById("modalOverlay").classList.add("open");
+        document.getElementById("teamSearch").value = "";
+        renderTeamList();
+        setTimeout(() => document.getElementById("teamSearch").focus(), 300);
+      }
+      function closeFavModal() {
+        document.getElementById("modalOverlay").classList.remove("open");
+      }
+      function closeFavModalOutside(e) {
+        if (e.target === document.getElementById("modalOverlay"))
+          closeFavModal();
+      }
 
-    // دالة إنشاء بطاقة جديدة
-    function createMatchCard(game) {
-        const matchCard = document.createElement('a');
-        matchCard.className = 'match-card';
-        matchCard.href = `game-details.html?gameid=${game.id}`;
-        matchCard.dataset.id = game.id;
-        matchCard.dataset.date = game.startyear;
-    
-        const statusClass = game.statusText.includes('شوط') ? 'live-status' : '';
-        const gameTime = game.gameTime ? ` | ${game.gameTime}'` : '';
-    
-        const scoreContent = game.statusText === 'لم تبدأ' ? 
-            createNotStartedElement() :
-            createScoreElement(`${game.first_team_score} - ${game.second_team_score}`);
-    
-        // إضافة aggregateText إذا كانت القيمة ليست null
-        const aggregateTextContent = game.aggregateText ?
-            `<div class="aggregate-text">${game.aggregateText}</div>` : '';
-    
-        // إضافة winDescription إذا كانت القيمة ليست null
-        const winDescriptionContent = game.winDescription ?
-            `<div class="win-description">${game.winDescription}</div>` : '';
-    
-        matchCard.innerHTML = `
-            <div class="competition-name">
-                <a href="league-games.html?league=${game.competitionId}">
-                    ${game.competitionDisplayName}
-                </a>
-            </div>
-            
-            <div class="teams-container">
-                <div class="team">
-                    <a href="team-row.html?teamid=${game.first_team_id}">
-                        <img class="team-logo" 
-                             src="${game.first_team_logo}" 
-                             alt="${game.first_team}"
-                             onerror="this.style.display='none'">
-                    </a>
-                    <span class="team-name">${game.first_team}</span>
-                </div>
-                
-                ${scoreContent.outerHTML}
-                
-                <div class="team">
-                    <a href="team-row.html?teamid=${game.second_team_id}">
-                        <img class="team-logo" 
-                             src="${game.second_team_logo}" 
-                             alt="${game.second_team}"
-                             onerror="this.style.display='none'">
-                    </a>
-                    <span class="team-name">${game.second_team}</span>
-                </div>
-            </div>
-            
-            ${aggregateTextContent}
-            ${winDescriptionContent}
-            
-            <div class="match-status">
-                <span class="status-text ${statusClass}">
-                    ${game.statusText}${gameTime}
-                </span>
-                <span class="time-container">
-                    <span>${game.startyear}</span>
-                    <span>•</span>
-                    <span>${game.startTime}</span>
-                </span>
-            </div>
-        `;
-    
-        return matchCard;
-    }
+      /* ═══ TEAM LIST ═══ */
+      const allTeamsMap = new Map(); // name → { logo }
 
-    // دالة التصفية حسب التبويب
-    function filterMatches(filterType) {
-        const dates = getFormattedDates();
-        const allCards = document.querySelectorAll('.match-card');
-
-        allCards.forEach(card => {
-            const cardDate = card.dataset.date;
-            card.classList.remove('hidden');
-
-            if (filterType !== 'all') {
-                const shouldShow = 
-                    (filterType === 'yesterday' && cardDate === dates.yesterday) ||
-                    (filterType === 'today' && cardDate === dates.today) ||
-                    (filterType === 'tomorrow' && cardDate === dates.tomorrow);
-
-                if (!shouldShow) card.classList.add('hidden');
-            }
+      function collectTeams(games) {
+        games.forEach((g) => {
+          if (!allTeamsMap.has(g.first_team))
+            allTeamsMap.set(g.first_team, { logo: g.first_team_logo });
+          if (!allTeamsMap.has(g.second_team))
+            allTeamsMap.set(g.second_team, { logo: g.second_team_logo });
         });
-    }
+      }
 
-    // إضافة حدث النقر على التبويبات
-    document.querySelector('.tabs-container').addEventListener('click', (e) => {
-        if (e.target.classList.contains('tab-btn')) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            e.target.classList.add('active');
-            filterMatches(e.target.dataset.filter);
+      function renderTeamList() {
+        const query = (
+          document.getElementById("teamSearch").value || ""
+        ).trim();
+        const favs = getFavs();
+        const list = document.getElementById("teamList");
+        list.innerHTML = "";
+
+        let teams = [...allTeamsMap.entries()];
+        if (query) teams = teams.filter(([name]) => name.includes(query));
+
+        // favs first, then alpha
+        teams.sort(([a], [b]) => {
+          const fa = favs.includes(a),
+            fb = favs.includes(b);
+          if (fa !== fb) return fa ? -1 : 1;
+          return a.localeCompare(b, "ar");
+        });
+
+        if (teams.length === 0) {
+          list.innerHTML = '<div class="no-teams-msg">لا توجد نتائج</div>';
+          return;
         }
-    });
 
-    // بدء التحميل الأولي
-    fetchMatches();
+        teams.forEach(([name, info]) => {
+          const selected = favs.includes(name);
+          const item = document.createElement("div");
+          item.className = "team-list-item" + (selected ? " selected" : "");
+          item.innerHTML = `
+            <img class="team-list-logo" src="${info.logo}" alt="${name}" onerror="this.style.visibility='hidden'">
+            <span class="team-list-name">${name}</span>
+            <div class="team-list-check">${selected ? "✓" : ""}</div>
+        `;
+          item.onclick = () => toggleFav(name);
+          list.appendChild(item);
+        });
+      }
 
-    // التحديث التلقائي كل دقيقة
-    setInterval(fetchMatches, 15000);
-</script>
-</body>
+      /* ═══ API ═══ */
+      async function fetchMatches() {
+        try {
+          const res = await fetch(
+            "https://football-api.alameedtv.workers.dev/v1/json_format",
+          );
+          const data = await res.json();
+          document.getElementById("loadingState").style.display = "none";
+          collectTeams(data.games);
+          updateMatches(data.games);
+          markLivePills();
+        } catch (e) {
+          document.getElementById("loadingState").style.display = "none";
+          document.getElementById("matchesContainer").innerHTML =
+            '<div class="error-box">⚠️ حدث خطأ في التحميل، يرجى المحاولة لاحقاً</div>';
+        }
+      }
+
+      /* ═══ RENDER ═══ */
+      function isLive(s) {
+        return (
+          s &&
+          (s.includes("شوط") ||
+            s.includes("الوقت الإضافي") ||
+            s.includes("بدلاء"))
+        );
+      }
+
+      function updateMatches(games) {
+        const container = document.getElementById("matchesContainer");
+        const existing = new Map();
+        container
+          .querySelectorAll(".match-card")
+          .forEach((c) => existing.set(c.dataset.id, c));
+
+        games.forEach((g) => {
+          const ex = existing.get(g.id);
+          if (ex) {
+            updateCard(ex, g);
+            existing.delete(g.id);
+          } else container.appendChild(buildCard(g));
+        });
+        existing.forEach((c) => c.remove());
+
+        applyFavClassesToCards();
+        filterByCurrentDate();
+      }
+
+      function buildCard(g) {
+        const card = document.createElement("a");
+        card.className = "match-card";
+        card.href = `game-details.html?gameid=${g.id}`;
+        card.dataset.id = g.id;
+        card.dataset.date = g.startyear;
+        card.dataset.t1 = g.first_team;
+        card.dataset.t2 = g.second_team;
+        if (isLive(g.statusText)) card.classList.add("is-live");
+
+        const gt = g.gameTime ? ` ${g.gameTime}'` : "";
+        const dot = isLive(g.statusText)
+          ? '<span class="live-dot"></span>'
+          : "";
+        const score =
+          g.statusText === "لم تبدأ"
+            ? `<div class="vs-display">VS</div>`
+            : `<div class="score-display">${g.first_team_score} - ${g.second_team_score}</div>`;
+        const agg = g.aggregateText
+          ? `<div class="aggregate-text">${g.aggregateText}</div>`
+          : "";
+        const win = g.winDescription
+          ? `<div class="win-description">${g.winDescription}</div>`
+          : "";
+
+        card.innerHTML = `
+        <div class="team-side right">
+            <div class="team-name">${g.first_team}</div>
+            <a href="team-row.html?teamid=${g.first_team_id}" onclick="event.stopPropagation()">
+                <img class="team-logo" src="${g.first_team_logo}" alt="${g.first_team}" onerror="this.style.display='none'">
+            </a>
+        </div>
+        <div class="match-center">
+            ${score}
+            <span class="status-badge ${isLive(g.statusText) ? "live" : ""}">${dot}${g.statusText}${gt}</span>
+            <span class="match-time">${g.startTime} • ${g.startyear}</span>
+            ${agg}${win}
+            <a class="comp-name" href="league-games.html?league=${g.competitionId}" onclick="event.stopPropagation()">${g.competitionDisplayName}</a>
+        </div>
+        <div class="team-side left">
+            <a href="team-row.html?teamid=${g.second_team_id}" onclick="event.stopPropagation()">
+                <img class="team-logo" src="${g.second_team_logo}" alt="${g.second_team}" onerror="this.style.display='none'">
+            </a>
+            <div class="team-name">${g.second_team}</div>
+        </div>
+    `;
+        return card;
+      }
+
+      function updateCard(card, g) {
+        const scoreEl = card.querySelector(".score-display, .vs-display");
+        if (g.statusText === "لم تبدأ") {
+          if (scoreEl) {
+            scoreEl.className = "vs-display";
+            scoreEl.textContent = "VS";
+          }
+        } else {
+          const ns = `${g.first_team_score} - ${g.second_team_score}`;
+          if (scoreEl) {
+            scoreEl.className = "score-display";
+            if (scoreEl.textContent !== ns) scoreEl.textContent = ns;
+          }
+        }
+        const st = card.querySelector(".status-badge");
+        if (st) {
+          const gt = g.gameTime ? ` ${g.gameTime}'` : "";
+          const dot = isLive(g.statusText)
+            ? '<span class="live-dot"></span>'
+            : "";
+          st.innerHTML = `${dot}${g.statusText}${gt}`;
+          st.className = `status-badge ${isLive(g.statusText) ? "live" : ""}`;
+        }
+        card.classList.toggle("is-live", isLive(g.statusText));
+        card.dataset.date = g.startyear;
+
+        const meta = card.querySelector(".match-center");
+        let ag = card.querySelector(".aggregate-text");
+        if (g.aggregateText) {
+          if (!ag) {
+            ag = document.createElement("div");
+            ag.className = "aggregate-text";
+            meta.appendChild(ag);
+          }
+          ag.textContent = g.aggregateText;
+        } else if (ag) ag.remove();
+        let wd = card.querySelector(".win-description");
+        if (g.winDescription) {
+          if (!wd) {
+            wd = document.createElement("div");
+            wd.className = "win-description";
+            meta.appendChild(wd);
+          }
+          wd.textContent = g.winDescription;
+        } else if (wd) wd.remove();
+      }
+
+      function applyFavClassesToCards() {
+        document.querySelectorAll(".match-card").forEach((c) => {
+          c.classList.toggle(
+            "is-fav",
+            isFav(c.dataset.t1) || isFav(c.dataset.t2),
+          );
+        });
+      }
+
+      /* ═══ FILTERING ═══ */
+      function filterByCurrentDate() {
+        const favFilter = getFavFilter();
+        const favs = getFavs();
+        let visible = 0;
+
+        document.querySelectorAll(".match-card").forEach((c) => {
+          let show = c.dataset.date === selectedDate;
+          if (show && favFilter && favs.length > 0) {
+            if (!favs.includes(c.dataset.t1) && !favs.includes(c.dataset.t2))
+              show = false;
+          }
+          c.classList.toggle("hidden", !show);
+          if (show) visible++;
+        });
+
+        const loading =
+          document.getElementById("loadingState").style.display !== "none";
+        const empty = document.getElementById("emptyState");
+        empty.style.display = !loading && visible === 0 ? "block" : "none";
+        document.getElementById("emptyMsg").textContent =
+          favFilter && favs.length > 0
+            ? "لا توجد مباريات لفرقك المفضلة في هذا اليوم"
+            : "لا توجد مباريات في هذا اليوم";
+      }
+
+      /* ═══ INIT ═══ */
+      buildDateStrip();
+      refreshFavUI();
+      fetchMatches();
+      setInterval(() => {
+        fetchMatches();
+        markLivePills();
+      }, 15000);
+    </script>
+  </body>
 </html>
