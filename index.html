@@ -175,6 +175,125 @@
         min-height: 18px;
       }
 
+      /* COMPETITIONS SLIDER */
+      .competitions-container {
+        position: relative;
+        z-index: 1;
+        padding: 0 12px 20px;
+        max-width: 900px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .competitions-arrow {
+        flex-shrink: 0;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 50%;
+        cursor: pointer;
+        color: var(--text-secondary);
+        font-size: 18px;
+        transition: all 0.2s;
+        user-select: none;
+        line-height: 1;
+      }
+      .competitions-arrow:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        box-shadow: 0 0 10px var(--accent-glow);
+      }
+      .competitions-arrow:active {
+        transform: scale(0.9);
+      }
+      .competitions-wrap {
+        flex: 1;
+        overflow: hidden;
+        position: relative;
+      }
+      .competitions-wrap::before,
+      .competitions-wrap::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 28px;
+        z-index: 2;
+        pointer-events: none;
+      }
+      .competitions-wrap::before {
+        right: 0;
+        background: linear-gradient(to left, var(--bg-deep), transparent);
+      }
+      .competitions-wrap::after {
+        left: 0;
+        background: linear-gradient(to right, var(--bg-deep), transparent);
+      }
+      .competitions-slider {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        padding: 12px 6px;
+        scrollbar-width: none;
+      }
+      .competitions-slider::-webkit-scrollbar {
+        display: none;
+      }
+      .competition-item {
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        text-decoration: none;
+        color: var(--text-secondary);
+        transition: all 0.2s;
+        padding: 8px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+      }
+      .competition-item:hover {
+        border-color: var(--accent);
+        background: var(--accent-glow);
+        color: var(--accent);
+        transform: translateY(-2px);
+        box-shadow: 0 0 12px var(--accent-glow);
+      }
+      .competition-logo {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px;
+      }
+      .competition-logo img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+      .competition-name {
+        font-size: 11px;
+        text-align: center;
+        font-weight: 500;
+        max-width: 70px;
+        line-height: 1.2;
+        color: var(--text-secondary);
+      }
+      .competition-item:hover .competition-name {
+        color: var(--accent);
+      }
+
       /* DATE NAVIGATOR */
       .date-nav {
         position: relative;
@@ -933,6 +1052,27 @@
       <p id="heroDate"></p>
     </div>
 
+    <!-- COMPETITIONS SLIDER -->
+    <div class="competitions-container">
+      <div
+        class="competitions-arrow"
+        id="compPrev"
+        onclick="shiftCompetitions(-1)"
+      >
+        &#8250;
+      </div>
+      <div class="competitions-wrap">
+        <div class="competitions-slider" id="competitionsSlider"></div>
+      </div>
+      <div
+        class="competitions-arrow"
+        id="compNext"
+        onclick="shiftCompetitions(1)"
+      >
+        &#8249;
+      </div>
+    </div>
+
     <!-- DATE NAVIGATOR -->
     <div class="date-nav">
       <div class="date-arrow" id="navPrev" onclick="shiftDate(-1)">&#8250;</div>
@@ -1653,7 +1793,64 @@
         updateFilterRow();
       }
 
+      /* ═══ COMPETITIONS ═══ */
+      async function loadCompetitions() {
+        try {
+          const response = await fetch(
+            "https://football-api.alameedtv.workers.dev/v1/json_format/competitions",
+          );
+          const competitions = await response.json();
+          displayCompetitions(competitions);
+        } catch (error) {
+          console.error("Error loading competitions:", error);
+        }
+      }
+
+      function displayCompetitions(competitions) {
+        const slider = document.getElementById("competitionsSlider");
+        slider.innerHTML = "";
+
+        competitions.forEach((comp) => {
+          const link = document.createElement("a");
+          link.className = "competition-item";
+          link.href = `league-games.html?league=${comp.id}`;
+
+          const logo = document.createElement("div");
+          logo.className = "competition-logo";
+
+          const img = document.createElement("img");
+          img.src = comp.logo;
+          img.alt = comp.name;
+          img.onerror = () => {
+            img.src =
+              "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Crect fill='%23111827' width='60' height='60'/%3E%3Ctext x='30' y='30' text-anchor='middle' dy='.3em' fill='%238899bb' font-size='28' font-family='Arial'%3E⚽%3C/text%3E%3C/svg%3E";
+          };
+
+          logo.appendChild(img);
+
+          const name = document.createElement("div");
+          name.className = "competition-name";
+          name.textContent = comp.name;
+
+          link.appendChild(logo);
+          link.appendChild(name);
+          slider.appendChild(link);
+        });
+      }
+
+      function shiftCompetitions(direction) {
+        const slider = document.getElementById("competitionsSlider");
+        const scrollAmount = 200;
+
+        if (direction > 0) {
+          slider.scrollLeft -= scrollAmount;
+        } else {
+          slider.scrollLeft += scrollAmount;
+        }
+      }
+
       /* ═══ INIT ═══ */
+      loadCompetitions();
       buildDateStrip();
       refreshFavUI();
       fetchMatches();
