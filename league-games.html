@@ -731,7 +731,7 @@
         return (
           s &&
           (s.includes("شوط") ||
-            s.includes("الوقت الإضافي") ||
+            // s.includes("الوقت الإضافي") ||
             s.includes("بدلاء"))
         );
       }
@@ -1049,7 +1049,7 @@
       /* ═══ INIT ═══ */
       buildDateStrip();
       fetchMatches();
-      // setInterval(refreshMatches, 20000);
+      setInterval(refreshMatches, 60000);
     </script>
   </body>
 </html>

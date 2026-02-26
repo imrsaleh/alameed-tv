@@ -1478,7 +1478,7 @@
         return (
           s &&
           (s.includes("شوط") ||
-            s.includes("الوقت الإضافي") ||
+            // s.includes("الوقت الإضافي") ||
             s.includes("بدلاء"))
         );
       }
@@ -1857,7 +1857,7 @@
       setInterval(() => {
         fetchMatches();
         markLivePills();
-      }, 20000);
+      }, 60000);
     </script>
   </body>
 </html>

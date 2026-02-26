@@ -671,7 +671,7 @@
         return (
           s &&
           (s.includes("شوط") ||
-            s.includes("الوقت الإضافي") ||
+            // s.includes("الوقت الإضافي") ||
             s.includes("بدلاء"))
         );
       }
@@ -943,7 +943,8 @@
         if (
           !game ||
           game.statusText.includes("انتهت") ||
-          game.statusText.includes("لم تبدأ")
+          game.statusText.includes("لم تبدأ") ||
+          game.statusText.includes("بعد الوقت الإضافي")
         )
           return;
         // Only re-render timeline, keep hero too to get score updates
