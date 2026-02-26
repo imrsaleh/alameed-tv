@@ -633,6 +633,304 @@
         border-radius: 4px;
       }
 
+      /* ── PAGE TABS ── */
+      .page-tabs {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        max-width: 900px;
+        margin: 20px auto 0;
+        padding: 0 16px;
+        gap: 4px;
+      }
+      .page-tab {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 10px 0;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: var(--text-muted);
+        font-family: "Tajawal", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+        user-select: none;
+      }
+      .page-tab:hover {
+        color: var(--text-secondary);
+        border-color: var(--border-light);
+      }
+      .page-tab.active {
+        background: var(--bg-card-hover);
+        border-color: var(--accent);
+        color: var(--accent);
+        box-shadow: 0 0 12px var(--accent-glow);
+      }
+      .page-tab .tab-icon {
+        font-size: 16px;
+      }
+
+      /* ── STANDING SECTION ── */
+      .standing-section {
+        position: relative;
+        z-index: 1;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 16px 14px 80px;
+        display: none;
+      }
+      .standing-section.visible {
+        display: block;
+      }
+
+      /* Table card */
+      .standing-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+      }
+
+      /* Header row */
+      .st-header {
+        display: grid;
+        grid-template-columns: 36px 1fr 40px 36px 36px 36px 44px;
+        align-items: center;
+        padding: 10px 14px;
+        background: var(--bg-surface);
+        border-bottom: 1px solid var(--border);
+        font-size: 10px;
+        font-weight: 800;
+        color: var(--text-muted);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        gap: 4px;
+      }
+      .st-header .col-team {
+        text-align: right;
+      }
+      .st-header .col-num {
+        text-align: center;
+      }
+
+      /* Team row */
+      .st-row {
+        display: grid;
+        grid-template-columns: 36px 1fr 40px 36px 36px 36px 44px;
+        align-items: center;
+        padding: 9px 14px;
+        border-bottom: 1px solid var(--border);
+        gap: 4px;
+        text-decoration: none;
+        color: inherit;
+        transition: background 0.15s;
+        cursor: pointer;
+      }
+      .st-row:last-child {
+        border-bottom: none;
+      }
+      .st-row:hover {
+        background: var(--bg-card-hover);
+      }
+
+      /* Rank cell */
+      .st-rank {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 16px;
+        color: var(--text-muted);
+        text-align: center;
+        line-height: 1;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        flex-shrink: 0;
+      }
+      /* Top 3 rank colours */
+      .st-rank.rank-1 {
+        background: rgba(255, 213, 79, 0.15);
+        color: #ffd54f;
+      }
+      .st-rank.rank-2 {
+        background: rgba(176, 190, 197, 0.12);
+        color: #b0bec5;
+      }
+      .st-rank.rank-3 {
+        background: rgba(188, 143, 90, 0.12);
+        color: #bc8f5a;
+      }
+
+      /* Promotion / relegation zone colour bands */
+      .st-row.zone-promotion {
+        border-right: 3px solid var(--accent);
+      }
+      .st-row.zone-playoff {
+        border-right: 3px solid var(--gold);
+      }
+      .st-row.zone-relegation {
+        border-right: 3px solid var(--live);
+      }
+
+      /* Team cell */
+      .st-team {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+      .st-team-logo {
+        width: 26px;
+        height: 26px;
+        object-fit: contain;
+        border-radius: 50%;
+        background: var(--bg-surface);
+        padding: 2px;
+        flex-shrink: 0;
+      }
+      .st-team-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      /* Number cells */
+      .st-num {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-align: center;
+      }
+
+      /* Points cell */
+      .st-pts {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 18px;
+        color: var(--text-primary);
+        text-align: center;
+        line-height: 1;
+      }
+
+      /* Form column (last 5) */
+      .st-form {
+        display: flex;
+        gap: 3px;
+        justify-content: center;
+        align-items: center;
+      }
+      .form-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .form-dot.W {
+        background: var(--accent);
+      }
+      .form-dot.D {
+        background: var(--gold);
+      }
+      .form-dot.L {
+        background: var(--live);
+      }
+
+      /* Standing loading skeleton */
+      .st-skeleton {
+        padding: 16px 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .st-skel-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        opacity: 0.5;
+        animation: skelPulse 1.5s ease infinite;
+      }
+      @keyframes skelPulse {
+        0%,
+        100% {
+          opacity: 0.25;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+      .st-skel-rank {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: var(--border);
+        flex-shrink: 0;
+      }
+      .st-skel-logo {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: var(--border);
+        flex-shrink: 0;
+      }
+      .st-skel-name {
+        flex: 1;
+        height: 13px;
+        border-radius: 6px;
+        background: var(--border);
+        max-width: 120px;
+      }
+      .st-skel-nums {
+        width: 120px;
+        height: 13px;
+        border-radius: 6px;
+        background: var(--border);
+      }
+
+      /* Legend */
+      .standing-legend {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        padding: 12px 14px 0;
+        margin-top: 12px;
+      }
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+      .legend-bar {
+        width: 3px;
+        height: 14px;
+        border-radius: 2px;
+      }
+
+      @media (max-width: 520px) {
+        .st-header,
+        .st-row {
+          grid-template-columns: 32px 1fr 34px 30px 30px 30px 38px;
+          padding: 8px 10px;
+        }
+        .st-team-name {
+          font-size: 12px;
+        }
+        .st-num {
+          font-size: 12px;
+        }
+        .st-pts {
+          font-size: 16px;
+        }
+      }
+
       @media (max-width: 480px) {
         .league-identity {
           padding: 18px 16px;
@@ -682,6 +980,22 @@
     <!-- LEAGUE HERO (injected) -->
     <div id="leagueHero"></div>
 
+    <!-- PAGE TABS -->
+    <div class="page-tabs">
+      <button
+        class="page-tab active"
+        id="tabMatches"
+        onclick="switchTab('matches')"
+      >
+        <span class="tab-icon">⚽</span>
+        <span>المباريات</span>
+      </button>
+      <button class="page-tab" id="tabStanding" onclick="switchTab('standing')">
+        <span class="tab-icon">📊</span>
+        <span>الترتيب</span>
+      </button>
+    </div>
+
     <!-- DATE NAVIGATOR -->
     <div class="date-nav">
       <div class="date-arrow" onclick="shiftDate(-1)">&#8250;</div>
@@ -714,7 +1028,278 @@
       <p id="emptyMsg">لا توجد مباريات في هذا اليوم</p>
     </div>
 
+    <!-- STANDING -->
+    <div class="standing-section" id="standingSection">
+      <div class="standing-card" id="standingCard">
+        <!-- skeleton shown until data arrives -->
+        <div class="st-skeleton" id="standingSkeleton">
+          <div class="st-skel-row">
+            <div class="st-skel-rank"></div>
+            <div class="st-skel-logo"></div>
+            <div class="st-skel-name"></div>
+            <div class="st-skel-nums"></div>
+          </div>
+          <div class="st-skel-row">
+            <div class="st-skel-rank"></div>
+            <div class="st-skel-logo"></div>
+            <div class="st-skel-name"></div>
+            <div class="st-skel-nums"></div>
+          </div>
+          <div class="st-skel-row">
+            <div class="st-skel-rank"></div>
+            <div class="st-skel-logo"></div>
+            <div class="st-skel-name"></div>
+            <div class="st-skel-nums"></div>
+          </div>
+          <div class="st-skel-row">
+            <div class="st-skel-rank"></div>
+            <div class="st-skel-logo"></div>
+            <div class="st-skel-name"></div>
+            <div class="st-skel-nums"></div>
+          </div>
+          <div class="st-skel-row">
+            <div class="st-skel-rank"></div>
+            <div class="st-skel-logo"></div>
+            <div class="st-skel-name"></div>
+            <div class="st-skel-nums"></div>
+          </div>
+          <div class="st-skel-row">
+            <div class="st-skel-rank"></div>
+            <div class="st-skel-logo"></div>
+            <div class="st-skel-name"></div>
+            <div class="st-skel-nums"></div>
+          </div>
+          <div class="st-skel-row">
+            <div class="st-skel-rank"></div>
+            <div class="st-skel-logo"></div>
+            <div class="st-skel-name"></div>
+            <div class="st-skel-nums"></div>
+          </div>
+          <div class="st-skel-row">
+            <div class="st-skel-rank"></div>
+            <div class="st-skel-logo"></div>
+            <div class="st-skel-name"></div>
+            <div class="st-skel-nums"></div>
+          </div>
+        </div>
+      </div>
+      <div class="standing-legend" id="standingLegend"></div>
+    </div>
+
     <script>
+      /* ═══ TABS ═══ */
+      let activeTab = "matches";
+
+      function switchTab(tab) {
+        activeTab = tab;
+        document
+          .getElementById("tabMatches")
+          .classList.toggle("active", tab === "matches");
+        document
+          .getElementById("tabStanding")
+          .classList.toggle("active", tab === "standing");
+
+        const showingMatches = tab === "matches";
+
+        // These are always safe to toggle freely
+        [
+          document.querySelector(".date-nav"),
+          document.querySelector(".filter-row"),
+          document.getElementById("matchesContainer"),
+        ].forEach((el) => {
+          if (el) el.style.display = showingMatches ? "" : "none";
+        });
+
+        // emptyState: save & restore its actual state, don't blindly show it
+        const emptyState = document.getElementById("emptyState");
+        if (emptyState) {
+          if (!showingMatches) {
+            emptyState.dataset.savedDisplay = emptyState.style.display;
+            emptyState.style.display = "none";
+          } else {
+            emptyState.style.display =
+              emptyState.dataset.savedDisplay || "none";
+          }
+        }
+
+        // loadingState: NEVER restore — once hidden after first load it must stay hidden
+        const loadingState = document.getElementById("loadingState");
+        if (loadingState && !showingMatches) {
+          loadingState.style.display = "none";
+        }
+
+        const standingSection = document.getElementById("standingSection");
+        standingSection.classList.toggle("visible", tab === "standing");
+
+        // Lazy-load standing on first open
+        if (tab === "standing" && !standingLoaded) {
+          fetchStanding();
+        }
+      }
+
+      /* ═══ STANDING ═══ */
+      let standingLoaded = false;
+      let standingData = null;
+
+      async function fetchStanding() {
+        try {
+          const league = getQueryParam("league");
+          const res = await fetch(
+            `https://football-api.alameedtv.workers.dev/v1/json_format/standing?competition=${league}`,
+          );
+          const data = await res.json();
+          standingData = data;
+          standingLoaded = true;
+          renderStanding(data);
+        } catch (e) {
+          document.getElementById("standingCard").innerHTML =
+            '<div class="error-box">⚠️ تعذّر تحميل الترتيب</div>';
+        }
+      }
+
+      function calcPoints(row) {
+        return row.gamesWon * 3 + row.gamesEven;
+      }
+
+      function calcGD(row) {
+        // API doesn't expose GF/GA directly, so we just show W/D/L
+        return null;
+      }
+
+      function renderStanding(data) {
+        if (!data || !data.row || data.row.length === 0) {
+          document.getElementById("standingCard").innerHTML =
+            '<div class="error-box">لا توجد بيانات للترتيب</div>';
+          return;
+        }
+
+        const rows = data.row;
+        const total = rows.length;
+        // Guess zones based on league size (common pattern: top 4 UEFA / bottom 3 relegation)
+        const proSlots = Math.min(4, Math.floor(total * 0.22));
+        const relSlots = Math.min(3, Math.floor(total * 0.17));
+
+        // Update hero emblem if we have a logo
+        if (data.competition_logo) {
+          const emblem = document.querySelector(".league-emblem");
+          if (emblem) {
+            emblem.innerHTML = "";
+            const img = document.createElement("img");
+            img.src = data.competition_logo;
+            img.alt = data.competition_name || "";
+            img.onerror = () => {
+              emblem.textContent = "🏆";
+            };
+            emblem.appendChild(img);
+          }
+          const nameEl = document.querySelector(".league-name");
+          if (nameEl && data.competition_name)
+            nameEl.textContent = data.competition_name;
+          document.title = `${data.competition_name || "الدوري"} | ALAMEED TV`;
+        }
+
+        const card = document.getElementById("standingCard");
+        card.innerHTML = "";
+
+        // ── Header ────────────────────────────────────────────────
+        const header = document.createElement("div");
+        header.className = "st-header";
+        header.innerHTML = `
+          <div class="col-num">#</div>
+          <div class="col-team">الفريق</div>
+          <div class="col-num">لع</div>
+          <div class="col-num">ف</div>
+          <div class="col-num">ت</div>
+          <div class="col-num">خ</div>
+          <div class="col-num">نق</div>
+        `;
+        card.appendChild(header);
+
+        // ── Rows ──────────────────────────────────────────────────
+        rows.forEach((row, idx) => {
+          const pts = calcPoints(row);
+          const rank = row.rank || idx + 1;
+          const isPromo = rank <= proSlots;
+          const isRelegate = rank > total - relSlots;
+          const isPlayoff = !isPromo && rank === proSlots + 1;
+
+          const tr = document.createElement("a");
+          tr.className =
+            "st-row" +
+            (isPromo ? " zone-promotion" : "") +
+            (isPlayoff ? " zone-playoff" : "") +
+            (isRelegate ? " zone-relegation" : "");
+          tr.href = `team-row.html?teamid=${row.team_id}`;
+
+          // Rank badge
+          const rankEl = document.createElement("div");
+          rankEl.className =
+            "st-rank" +
+            (rank === 1
+              ? " rank-1"
+              : rank === 2
+                ? " rank-2"
+                : rank === 3
+                  ? " rank-3"
+                  : "");
+          rankEl.textContent = rank;
+
+          // Team cell
+          const teamCell = document.createElement("div");
+          teamCell.className = "st-team";
+          const logo = document.createElement("img");
+          logo.className = "st-team-logo";
+          logo.src = row.team_logo;
+          logo.alt = row.team_name;
+          logo.onerror = () => {
+            logo.style.visibility = "hidden";
+          };
+          const name = document.createElement("span");
+          name.className = "st-team-name";
+          name.textContent = row.team_name;
+          teamCell.appendChild(logo);
+          teamCell.appendChild(name);
+
+          // Number cells
+          const mkNum = (val, extra = "") => {
+            const el = document.createElement("div");
+            el.className = "st-num" + extra;
+            el.textContent = val ?? "-";
+            return el;
+          };
+
+          // Points cell
+          const ptsEl = document.createElement("div");
+          ptsEl.className = "st-pts";
+          ptsEl.textContent = pts;
+
+          tr.appendChild(rankEl);
+          tr.appendChild(teamCell);
+          tr.appendChild(mkNum(row.gamePlayed));
+          tr.appendChild(mkNum(row.gamesWon));
+          tr.appendChild(mkNum(row.gamesEven));
+          tr.appendChild(mkNum(row.gamesLost));
+          tr.appendChild(ptsEl);
+
+          card.appendChild(tr);
+        });
+
+        // ── Legend ────────────────────────────────────────────────
+        const legend = document.getElementById("standingLegend");
+        legend.innerHTML = "";
+        const zones = [
+          { color: "var(--accent)", label: "تأهل أوروبي / آسيوي" },
+          { color: "var(--gold)", label: "ملحق التأهل" },
+          { color: "var(--live)", label: "هبوط" },
+        ];
+        zones.forEach((z) => {
+          const item = document.createElement("div");
+          item.className = "legend-item";
+          item.innerHTML = `<div class="legend-bar" style="background:${z.color}"></div><span>${z.label}</span>`;
+          legend.appendChild(item);
+        });
+      }
+
       /* ═══ HELPERS ═══ */
       function getQueryParam(p) {
         return new URLSearchParams(window.location.search).get(p);
@@ -1049,7 +1634,7 @@
       /* ═══ INIT ═══ */
       buildDateStrip();
       fetchMatches();
-      setInterval(refreshMatches, 60000);
+      // setInterval(refreshMatches, 60000);
     </script>
   </body>
 </html>
