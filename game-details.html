@@ -763,150 +763,465 @@
 
       /* ── GAME STATE ── */
       let game;
+      let heroBuilt = false; // true after first full hero render
+      let timelineBuilt = false; // true after first full timeline render
 
-      /* ── RENDER HERO ── */
-      function renderHero(game) {
-        const live = isLive(game.statusText);
-        const gt = game.gameTime ? ` ${game.gameTime}'` : "";
-        const liveD = live ? '<span class="live-dot"></span>' : "";
+      /* ════════════════════════════════════════════════════════════
+         HERO  —  build once, patch on refresh
+         ════════════════════════════════════════════════════════════ */
 
-        const scoreHTML =
-          game.statusText === "لم تبدأ"
-            ? `<div class="score-nums not-started">VS</div>`
-            : `<div class="score-nums">${game.first_team_score} - ${game.second_team_score}</div>`;
+      function buildHero(g) {
+        /* Creates the full static DOM structure once.
+           Dynamic parts get stable IDs so updateHero() can patch them. */
+        const live = isLive(g.statusText);
+        const gt = g.gameTime ? ` ${g.gameTime}'` : "";
 
-        const winDesc = game.winDescription
-          ? `<span class="win-desc">(${game.winDescription})</span>`
-          : "";
-        const aggText = game.aggregateText
-          ? `<span style="margin-right:6px;font-size:11px;color:var(--gold)">${game.aggregateText}</span>`
-          : "";
+        const heroContainer = document.getElementById("heroContainer");
 
-        document.getElementById("heroContainer").innerHTML = `
-        <div class="match-hero">
-            <div class="competition-badge">
-                <span>${game.competitionDisplayName}</span>
-                ${winDesc}${aggText}
-            </div>
-            <div class="hero-card ${live ? "is-live" : ""}">
-                <div class="teams-row">
-                    <div class="team-block home">
-                        <img class="team-logo" src="${game.first_team_logo}" alt="${game.first_team}" onerror="this.style.visibility='hidden'">
-                        <div class="team-name-hero">${game.first_team}</div>
-                    </div>
-                    <div class="score-block">
-                        ${scoreHTML}
-                        <span class="status-pill ${live ? "live" : ""}">${liveD}${game.statusText}${gt}</span>
-                        <span class="match-time-label">${game.startTime} • ${game.startyear}</span>
-                    </div>
-                    <div class="team-block away">
-                        <img class="team-logo" src="${game.second_team_logo}" alt="${game.second_team}" onerror="this.style.visibility='hidden'">
-                        <div class="team-name-hero">${game.second_team}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
+        // ── wrapper ──────────────────────────────────────────────
+        const matchHero = document.createElement("div");
+        matchHero.className = "match-hero";
+
+        // ── competition badge ─────────────────────────────────────
+        const badge = document.createElement("div");
+        badge.className = "competition-badge";
+
+        const compSpan = document.createElement("span");
+        compSpan.id = "heroCompName";
+        compSpan.textContent = g.competitionDisplayName;
+        badge.appendChild(compSpan);
+
+        const winDescSpan = document.createElement("span");
+        winDescSpan.className = "win-desc";
+        winDescSpan.id = "heroWinDesc";
+        if (g.winDescription) winDescSpan.textContent = `(${g.winDescription})`;
+        badge.appendChild(winDescSpan);
+
+        const aggSpan = document.createElement("span");
+        aggSpan.id = "heroAgg";
+        aggSpan.style.cssText =
+          "margin-right:6px;font-size:11px;color:var(--gold)";
+        if (g.aggregateText) aggSpan.textContent = g.aggregateText;
+        badge.appendChild(aggSpan);
+
+        matchHero.appendChild(badge);
+
+        // ── hero card ─────────────────────────────────────────────
+        const heroCard = document.createElement("div");
+        heroCard.className = "hero-card" + (live ? " is-live" : "");
+        heroCard.id = "heroCard";
+
+        // teams row
+        const teamsRow = document.createElement("div");
+        teamsRow.className = "teams-row";
+
+        // home
+        const homeBlock = document.createElement("div");
+        homeBlock.className = "team-block home";
+        const homeLogo = document.createElement("img");
+        homeLogo.className = "team-logo";
+        homeLogo.src = g.first_team_logo;
+        homeLogo.alt = g.first_team;
+        homeLogo.onerror = function () {
+          this.style.visibility = "hidden";
+        };
+        const homeName = document.createElement("div");
+        homeName.className = "team-name-hero";
+        homeName.textContent = g.first_team;
+        homeBlock.appendChild(homeLogo);
+        homeBlock.appendChild(homeName);
+
+        // score block
+        const scoreBlock = document.createElement("div");
+        scoreBlock.className = "score-block";
+
+        const scoreEl = document.createElement("div");
+        scoreEl.id = "heroScore";
+        if (g.statusText === "لم تبدأ") {
+          scoreEl.className = "score-nums not-started";
+          scoreEl.textContent = "VS";
+        } else {
+          scoreEl.className = "score-nums";
+          scoreEl.textContent = `${g.first_team_score} - ${g.second_team_score}`;
+        }
+
+        const statusPill = document.createElement("span");
+        statusPill.id = "heroStatus";
+        statusPill.className = "status-pill" + (live ? " live" : "");
+        if (live) {
+          const dot = document.createElement("span");
+          dot.className = "live-dot";
+          statusPill.appendChild(dot);
+        }
+        statusPill.appendChild(document.createTextNode(`${g.statusText}${gt}`));
+
+        const timeLabel = document.createElement("span");
+        timeLabel.className = "match-time-label";
+        timeLabel.textContent = `${g.startTime} • ${g.startyear}`;
+
+        scoreBlock.appendChild(scoreEl);
+        scoreBlock.appendChild(statusPill);
+        scoreBlock.appendChild(timeLabel);
+
+        // away
+        const awayBlock = document.createElement("div");
+        awayBlock.className = "team-block away";
+        const awayLogo = document.createElement("img");
+        awayLogo.className = "team-logo";
+        awayLogo.src = g.second_team_logo;
+        awayLogo.alt = g.second_team;
+        awayLogo.onerror = function () {
+          this.style.visibility = "hidden";
+        };
+        const awayName = document.createElement("div");
+        awayName.className = "team-name-hero";
+        awayName.textContent = g.second_team;
+        awayBlock.appendChild(awayLogo);
+        awayBlock.appendChild(awayName);
+
+        teamsRow.appendChild(homeBlock);
+        teamsRow.appendChild(scoreBlock);
+        teamsRow.appendChild(awayBlock);
+        heroCard.appendChild(teamsRow);
+        matchHero.appendChild(heroCard);
+        heroContainer.appendChild(matchHero);
+
+        heroBuilt = true;
       }
 
-      /* ── RENDER TIMELINE ── */
-      function renderTimeline(game, events) {
-        const container = document.getElementById("timelineContainer");
+      function updateHero(g) {
+        /* Patches only the values that can change during a live match.
+           Never touches <img> src — images never reload. */
+        const live = isLive(g.statusText);
+        const gt = g.gameTime ? ` ${g.gameTime}'` : "";
 
-        if (!events || events.length === 0) {
-          container.innerHTML = `
-            <div class="timeline-section">
-                <div class="no-events">
-                    <div class="ne-icon">🏟️</div>
-                    <p>${game.statusText === "لم تبدأ" ? "لم تبدأ المباراة بعد" : "لا توجد أحداث متاحة حتى الآن"}</p>
-                </div>
-            </div>`;
+        // ── score ────────────────────────────────────────────────
+        const scoreEl = document.getElementById("heroScore");
+        if (scoreEl) {
+          if (g.statusText === "لم تبدأ") {
+            if (scoreEl.className !== "score-nums not-started")
+              scoreEl.className = "score-nums not-started";
+            if (scoreEl.textContent !== "VS") scoreEl.textContent = "VS";
+          } else {
+            const ns = `${g.first_team_score} - ${g.second_team_score}`;
+            if (scoreEl.className !== "score-nums")
+              scoreEl.className = "score-nums";
+            if (scoreEl.textContent !== ns) scoreEl.textContent = ns;
+          }
+        }
+
+        // ── status pill ──────────────────────────────────────────
+        const pill = document.getElementById("heroStatus");
+        if (pill) {
+          const wantLive = live;
+          const pillIsLive = pill.classList.contains("live");
+
+          if (wantLive !== pillIsLive) pill.classList.toggle("live", wantLive);
+
+          // sync live-dot node
+          const existingDot = pill.querySelector(".live-dot");
+          if (wantLive && !existingDot) {
+            const dot = document.createElement("span");
+            dot.className = "live-dot";
+            pill.insertBefore(dot, pill.firstChild);
+          } else if (!wantLive && existingDot) {
+            existingDot.remove();
+          }
+
+          // sync text node
+          const wantText = `${g.statusText}${gt}`;
+          let textNode = null;
+          for (let i = pill.childNodes.length - 1; i >= 0; i--) {
+            if (pill.childNodes[i].nodeType === Node.TEXT_NODE) {
+              textNode = pill.childNodes[i];
+              break;
+            }
+          }
+          if (!textNode) {
+            pill.appendChild(document.createTextNode(wantText));
+          } else if (textNode.nodeValue !== wantText) {
+            textNode.nodeValue = wantText;
+          }
+        }
+
+        // ── hero card live border ─────────────────────────────────
+        const card = document.getElementById("heroCard");
+        if (card) {
+          const cardIsLive = card.classList.contains("is-live");
+          if (live !== cardIsLive) card.classList.toggle("is-live", live);
+        }
+
+        // ── win description ──────────────────────────────────────
+        const winEl = document.getElementById("heroWinDesc");
+        if (winEl) {
+          const want = g.winDescription ? `(${g.winDescription})` : "";
+          if (winEl.textContent !== want) winEl.textContent = want;
+        }
+
+        // ── aggregate text ───────────────────────────────────────
+        const aggEl = document.getElementById("heroAgg");
+        if (aggEl) {
+          const want = g.aggregateText || "";
+          if (aggEl.textContent !== want) aggEl.textContent = want;
+        }
+      }
+
+      /* ════════════════════════════════════════════════════════════
+         TIMELINE  —  build skeleton once, diff events on refresh
+         ════════════════════════════════════════════════════════════ */
+
+      // Stable key for deduplication: teamID + eventTime + event type
+      function eventKey(ev) {
+        return `${ev.teamID}|${ev.eventTime}|${ev.event}`;
+      }
+
+      function buildEventRow(ev, g, animate) {
+        /* Creates a single event-row DOM node.
+           animate=false skips the fadeUp animation (used on refresh). */
+        const type = classifyEvent(ev.event);
+        const meta = EVENT_META[type] || {
+          cls: "",
+          label: ev.event,
+          emoji: "•",
+          icon: "",
+        };
+        const isHome = ev.teamID === game.first_team_id;
+
+        // ── icon ─────────────────────────────────────────────────
+        const iconWrap = document.createElement("div");
+        iconWrap.className = "ev-icon-wrap";
+        if (meta.icon) {
+          const img = document.createElement("img");
+          img.src = iconUrl(meta.icon);
+          img.alt = meta.label;
+          img.onerror = function () {
+            this.style.display = "none";
+          };
+          iconWrap.appendChild(img);
+        } else {
+          const emoji = document.createElement("span");
+          emoji.className = "ev-icon-emoji";
+          emoji.textContent = meta.emoji;
+          iconWrap.appendChild(emoji);
+        }
+
+        // ── player info ───────────────────────────────────────────
+        const evInfo = document.createElement("div");
+        evInfo.className = "ev-info";
+
+        const playerEl = document.createElement("div");
+        playerEl.className = "ev-player";
+        playerEl.textContent =
+          type === "استبدال" ? ev.playerIN || ev.player || "" : ev.player || "";
+        evInfo.appendChild(playerEl);
+
+        if (type === "استبدال" && ev.playerOUT) {
+          const subOut = document.createElement("div");
+          subOut.className = "ev-sub-out";
+          subOut.textContent = ev.playerOUT;
+          evInfo.appendChild(subOut);
+        }
+
+        const typeLabel = document.createElement("div");
+        typeLabel.className = "ev-type-label";
+        typeLabel.textContent = meta.label || "";
+        evInfo.appendChild(typeLabel);
+
+        // ── card ──────────────────────────────────────────────────
+        const evCard = document.createElement("div");
+        evCard.className = "ev-card";
+        evCard.appendChild(iconWrap);
+        evCard.appendChild(evInfo);
+
+        // ── left / center / right cells ───────────────────────────
+        const leftCell = document.createElement("div");
+        leftCell.className = "event-left";
+        const centerCell = document.createElement("div");
+        centerCell.className = "event-center";
+        const rightCell = document.createElement("div");
+        rightCell.className = "event-right";
+
+        const bubble = document.createElement("div");
+        bubble.className = "time-bubble";
+        bubble.textContent = `${ev.eventTime}'`;
+        centerCell.appendChild(bubble);
+
+        if (isHome) leftCell.appendChild(evCard);
+        else rightCell.appendChild(evCard);
+
+        // ── row ───────────────────────────────────────────────────
+        const row = document.createElement("div");
+        row.className = "event-row" + (meta.cls ? " " + meta.cls : "");
+        row.dataset.key = eventKey(ev);
+
+        if (!animate) {
+          // already visible — no animation replay
+          row.style.opacity = "1";
+          row.style.animation = "none";
+        }
+
+        row.appendChild(leftCell);
+        row.appendChild(centerCell);
+        row.appendChild(rightCell);
+        return row;
+      }
+
+      function buildTimelineShell(g) {
+        /* Creates the static chrome: section wrapper, title, column headers, timeline div.
+           Called once. The .timeline div is the only thing that gets diffed later. */
+        const container = document.getElementById("timelineContainer");
+        container.innerHTML = ""; // only ever called once
+
+        const section = document.createElement("div");
+        section.className = "timeline-section";
+
+        const titleDiv = document.createElement("div");
+        titleDiv.className = "timeline-section-title";
+        const h2 = document.createElement("h2");
+        h2.textContent = "مجريات المباراة";
+        titleDiv.appendChild(h2);
+        section.appendChild(titleDiv);
+
+        // column headers
+        const colHeaders = document.createElement("div");
+        colHeaders.style.cssText =
+          "display:grid;grid-template-columns:1fr 56px 1fr;margin-bottom:10px;padding:0 4px";
+        const homeHeader = document.createElement("div");
+        homeHeader.id = "tlHomeLabel";
+        homeHeader.style.cssText =
+          "text-align:right;font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.5px;padding-left:14px";
+        homeHeader.textContent = g.first_team;
+        const mid = document.createElement("div");
+        const awayHeader = document.createElement("div");
+        awayHeader.id = "tlAwayLabel";
+        awayHeader.style.cssText =
+          "text-align:left;font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.5px;padding-right:14px";
+        awayHeader.textContent = g.second_team;
+        colHeaders.appendChild(homeHeader);
+        colHeaders.appendChild(mid);
+        colHeaders.appendChild(awayHeader);
+        section.appendChild(colHeaders);
+
+        const timeline = document.createElement("div");
+        timeline.className = "timeline";
+        timeline.id = "timelineTrack";
+        section.appendChild(timeline);
+
+        container.appendChild(section);
+        timelineBuilt = true;
+      }
+
+      function showNoEvents(g) {
+        /* Replaces timeline content with the "no events" placeholder.
+           Only used when there are genuinely no events. */
+        const container = document.getElementById("timelineContainer");
+        const existing = container.querySelector(".no-events");
+
+        const msg =
+          g.statusText === "لم تبدأ"
+            ? "لم تبدأ المباراة بعد"
+            : "لا توجد أحداث متاحة حتى الآن";
+
+        if (existing) {
+          // update message in-place, no flicker
+          const p = existing.querySelector("p");
+          if (p && p.textContent !== msg) p.textContent = msg;
           return;
         }
 
-        // Filter valid events
-        const valid = events.filter(
+        container.innerHTML = `
+          <div class="timeline-section">
+            <div class="no-events">
+              <div class="ne-icon">🏟️</div>
+              <p>${msg}</p>
+            </div>
+          </div>`;
+        timelineBuilt = false; // shell needs rebuild if events arrive later
+      }
+
+      function patchTimeline(g, events) {
+        /* Diffs the event list against existing DOM rows.
+           - Existing rows: kept in-place, no animation replay, no image reload
+           - New rows: appended with animation
+           - Removed rows: deleted
+           Order: newest-first (re-sorted each call, rows are moved not recreated) */
+
+        const valid = (events || []).filter(
           (e) => e.event !== null && e.eventTime !== null && e.teamID !== null,
         );
 
+        // ── no events edge-case ───────────────────────────────────
         if (valid.length === 0) {
-          container.innerHTML = `
-            <div class="timeline-section">
-                <div class="no-events">
-                    <div class="ne-icon">⏳</div>
-                    <p>${game.statusText}</p>
-                </div>
-            </div>`;
+          if (timelineBuilt) {
+            // clear the track but keep the shell
+            const track = document.getElementById("timelineTrack");
+            if (track) track.innerHTML = "";
+          }
+          showNoEvents(g);
           return;
         }
 
-        // Sort ascending by event time for timeline display
+        // ── ensure shell exists ───────────────────────────────────
+        if (!timelineBuilt || !document.getElementById("timelineTrack")) {
+          // Remove any no-events placeholder first
+          const container = document.getElementById("timelineContainer");
+          container.innerHTML = "";
+          timelineBuilt = false;
+          buildTimelineShell(g);
+        }
+
+        const track = document.getElementById("timelineTrack");
+
+        // Sort newest-first
         const sorted = [...valid].sort((a, b) => {
-          const ta = parseInt(a.eventTime) || 0;
-          const tb = parseInt(b.eventTime) || 0;
-          return tb - ta; // newest first (top)
+          return (parseInt(b.eventTime) || 0) - (parseInt(a.eventTime) || 0);
         });
 
-        let rows = "";
-        sorted.forEach((ev, i) => {
-          const type = classifyEvent(ev.event);
-          const meta = EVENT_META[type] || {
-            cls: "",
-            label: ev.event,
-            emoji: "•",
-            icon: "",
-          };
-          const isHome = ev.teamID === game.first_team_id;
-          const delay = i * 40 + "ms";
-
-          const iconEl = meta.icon
-            ? `<img src="${iconUrl(meta.icon)}" alt="${meta.label}" onerror="this.style.display='none'">`
-            : `<span class="ev-icon-emoji">${meta.emoji}</span>`;
-
-          const playerHTML =
-            type === "استبدال"
-              ? `<div class="ev-player">${ev.playerIN || ev.player || ""}</div>
-               ${ev.playerOUT ? `<div class="ev-sub-out">${ev.playerOUT}</div>` : ""}`
-              : `<div class="ev-player">${ev.player || ""}</div>`;
-
-          const card = `
-            <div class="ev-card">
-                <div class="ev-icon-wrap">${iconEl}</div>
-                <div class="ev-info">
-                    ${playerHTML}
-                    <div class="ev-type-label">${meta.label || ""}</div>
-                </div>
-            </div>`;
-
-          rows += `
-            <div class="event-row ${meta.cls}" style="animation-delay:${delay}">
-                <div class="event-left">${isHome ? card : ""}</div>
-                <div class="event-center">
-                    <div class="time-bubble">${ev.eventTime}'</div>
-                </div>
-                <div class="event-right">${!isHome ? card : ""}</div>
-            </div>`;
+        // ── build key → existing row map ──────────────────────────
+        const existingRows = new Map();
+        track.querySelectorAll(".event-row").forEach((row) => {
+          existingRows.set(row.dataset.key, row);
         });
 
-        // Column headers
-        container.innerHTML = `
-        <div class="timeline-section">
-            <div class="timeline-section-title">
-                <h2>مجريات المباراة</h2>
-            </div>
+        // ── desired key set ───────────────────────────────────────
+        const desiredKeys = new Set(sorted.map(eventKey));
 
-            <div style="display:grid;grid-template-columns:1fr 56px 1fr;margin-bottom:10px;padding:0 4px">
-                <div style="text-align:right;font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.5px;padding-left:14px">${game.first_team}</div>
-                <div></div>
-                <div style="text-align:left;font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.5px;padding-right:14px">${game.second_team}</div>
-            </div>
+        // ── remove rows no longer in data ─────────────────────────
+        existingRows.forEach((row, key) => {
+          if (!desiredKeys.has(key)) {
+            row.remove();
+            existingRows.delete(key);
+          }
+        });
 
-            <div class="timeline">${rows}</div>
-        </div>
-    `;
+        // ── insert / reorder rows ─────────────────────────────────
+        sorted.forEach((ev, idx) => {
+          const key = eventKey(ev);
+          let row = existingRows.get(key);
+
+          if (!row) {
+            // Brand-new event — build with animation, stagger slightly
+            row = buildEventRow(ev, g, true);
+            row.style.animationDelay = idx * 35 + "ms";
+          } else {
+            // Existing row — ensure no animation re-triggers
+            if (row.style.animation !== "none") {
+              row.style.animation = "none";
+              row.style.opacity = "1";
+            }
+          }
+
+          // Maintain correct order by inserting at the right position
+          const refNode = track.children[idx];
+          if (refNode !== row) {
+            track.insertBefore(row, refNode || null);
+          }
+        });
       }
 
-      /* ── FETCH ── */
+      /* ════════════════════════════════════════════════════════════
+         FETCH
+         ════════════════════════════════════════════════════════════ */
       async function fetchGame() {
         try {
           const gameid = getQueryParam("gameid");
@@ -926,10 +1241,15 @@
           game = data.games[0];
           const events = data.events || [];
 
-          renderHero(game);
-          renderTimeline(game, events);
+          // First load — build full structure from scratch
+          if (!heroBuilt) {
+            buildHero(game);
+          } else {
+            updateHero(game);
+          }
 
-          // update title
+          patchTimeline(game, events);
+
           document.title = `${game.first_team} vs ${game.second_team}`;
         } catch (err) {
           document.getElementById("loadingState").style.display = "none";
@@ -947,7 +1267,6 @@
           game.statusText.includes("بعد الوقت الإضافي")
         )
           return;
-        // Only re-render timeline, keep hero too to get score updates
         fetchGame();
       }
 
